@@ -62,9 +62,9 @@ namespace FEM {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea5 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -72,11 +72,11 @@ namespace FEM {
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->groupBox1->SuspendLayout();
@@ -85,18 +85,18 @@ namespace FEM {
 			// 
 			// chart1
 			// 
-			chartArea5->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea5);
-			legend5->Enabled = false;
-			legend5->Name = L"Legend1";
-			this->chart1->Legends->Add(legend5);
+			chartArea2->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea2);
+			legend2->Enabled = false;
+			legend2->Name = L"Legend1";
+			this->chart1->Legends->Add(legend2);
 			this->chart1->Location = System::Drawing::Point(13, 13);
 			this->chart1->Name = L"chart1";
-			series5->ChartArea = L"ChartArea1";
-			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::FastPoint;
-			series5->Legend = L"Legend1";
-			series5->Name = L"Series1";
-			this->chart1->Series->Add(series5);
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::FastPoint;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Series1";
+			this->chart1->Series->Add(series2);
 			this->chart1->Size = System::Drawing::Size(414, 311);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -131,17 +131,18 @@ namespace FEM {
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(564, 58);
+			this->textBox2->Location = System::Drawing::Point(529, 58);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(53, 20);
 			this->textBox2->TabIndex = 5;
 			this->textBox2->Text = L"5000";
 			this->textBox2->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->textBox2->TextChanged += gcnew System::EventHandler(this, &WF::textBox2_TextChanged);
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(582, 42);
+			this->label2->Location = System::Drawing::Point(531, 42);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(15, 13);
 			this->label2->TabIndex = 4;
@@ -158,16 +159,15 @@ namespace FEM {
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"groupBox1";
 			// 
-			// groupBox2
+			// radioButton2
 			// 
-			this->groupBox2->Controls->Add(this->radioButton4);
-			this->groupBox2->Controls->Add(this->radioButton3);
-			this->groupBox2->Location = System::Drawing::Point(454, 205);
-			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(183, 93);
-			this->groupBox2->TabIndex = 7;
-			this->groupBox2->TabStop = false;
-			this->groupBox2->Text = L"groupBox2";
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(6, 42);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(85, 17);
+			this->radioButton2->TabIndex = 1;
+			this->radioButton2->Text = L"radioButton2";
+			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
 			// radioButton1
 			// 
@@ -181,15 +181,26 @@ namespace FEM {
 			this->radioButton1->Text = L"radioButton1";
 			this->radioButton1->UseVisualStyleBackColor = true;
 			// 
-			// radioButton2
+			// groupBox2
 			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(6, 42);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(85, 17);
-			this->radioButton2->TabIndex = 1;
-			this->radioButton2->Text = L"radioButton2";
-			this->radioButton2->UseVisualStyleBackColor = true;
+			this->groupBox2->Controls->Add(this->radioButton4);
+			this->groupBox2->Controls->Add(this->radioButton3);
+			this->groupBox2->Location = System::Drawing::Point(454, 205);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(183, 93);
+			this->groupBox2->TabIndex = 7;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"groupBox2";
+			// 
+			// radioButton4
+			// 
+			this->radioButton4->AutoSize = true;
+			this->radioButton4->Location = System::Drawing::Point(7, 54);
+			this->radioButton4->Name = L"radioButton4";
+			this->radioButton4->Size = System::Drawing::Size(85, 17);
+			this->radioButton4->TabIndex = 1;
+			this->radioButton4->Text = L"radioButton4";
+			this->radioButton4->UseVisualStyleBackColor = true;
 			// 
 			// radioButton3
 			// 
@@ -202,16 +213,6 @@ namespace FEM {
 			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"radioButton3";
 			this->radioButton3->UseVisualStyleBackColor = true;
-			// 
-			// radioButton4
-			// 
-			this->radioButton4->AutoSize = true;
-			this->radioButton4->Location = System::Drawing::Point(7, 54);
-			this->radioButton4->Name = L"radioButton4";
-			this->radioButton4->Size = System::Drawing::Size(85, 17);
-			this->radioButton4->TabIndex = 1;
-			this->radioButton4->Text = L"radioButton4";
-			this->radioButton4->UseVisualStyleBackColor = true;
 			// 
 			// textBox3
 			// 
@@ -261,5 +262,7 @@ namespace FEM {
 				chart1->Series[0]->Points->AddXY(x, sin(x));
 			}
 		}
-	};
+	private: System::Void textBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	}
+};
 }
