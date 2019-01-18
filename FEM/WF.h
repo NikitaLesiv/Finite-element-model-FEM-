@@ -61,9 +61,9 @@ namespace FEM {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -83,18 +83,18 @@ namespace FEM {
 			// 
 			// chart1
 			// 
-			chartArea1->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea1);
-			legend1->Enabled = false;
-			legend1->Name = L"Legend1";
-			this->chart1->Legends->Add(legend1);
+			chartArea2->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea2);
+			legend2->Enabled = false;
+			legend2->Name = L"Legend1";
+			this->chart1->Legends->Add(legend2);
 			this->chart1->Location = System::Drawing::Point(13, 13);
 			this->chart1->Name = L"chart1";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::FastPoint;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Series1";
-			this->chart1->Series->Add(series1);
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::FastPoint;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Series1";
+			this->chart1->Series->Add(series2);
 			this->chart1->Size = System::Drawing::Size(414, 311);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -112,7 +112,7 @@ namespace FEM {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(495, 42);
+			this->label1->Location = System::Drawing::Point(457, 42);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 2;
@@ -120,7 +120,7 @@ namespace FEM {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(485, 58);
+			this->textBox1->Location = System::Drawing::Point(454, 58);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(37, 20);
 			this->textBox1->TabIndex = 3;
