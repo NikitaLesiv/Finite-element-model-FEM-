@@ -41,6 +41,12 @@ namespace FEM {
 	private: System::Windows::Forms::TextBox^  textBox1;
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::RadioButton^  radioButton2;
+	private: System::Windows::Forms::RadioButton^  radioButton1;
+	private: System::Windows::Forms::GroupBox^  groupBox2;
+	private: System::Windows::Forms::RadioButton^  radioButton4;
+	private: System::Windows::Forms::RadioButton^  radioButton3;
 
 	private:
 		/// <summary>
@@ -64,7 +70,15 @@ namespace FEM {
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
+			this->groupBox1->SuspendLayout();
+			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// chart1
@@ -87,7 +101,7 @@ namespace FEM {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(478, 285);
+			this->button1->Location = System::Drawing::Point(454, 322);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(128, 38);
 			this->button1->TabIndex = 1;
@@ -131,11 +145,79 @@ namespace FEM {
 			this->label2->TabIndex = 4;
 			this->label2->Text = L"N";
 			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->radioButton2);
+			this->groupBox1->Controls->Add(this->radioButton1);
+			this->groupBox1->Location = System::Drawing::Point(454, 96);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(187, 79);
+			this->groupBox1->TabIndex = 6;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"groupBox1";
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->radioButton4);
+			this->groupBox2->Controls->Add(this->radioButton3);
+			this->groupBox2->Location = System::Drawing::Point(454, 205);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(183, 93);
+			this->groupBox2->TabIndex = 7;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"groupBox2";
+			// 
+			// radioButton1
+			// 
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Checked = true;
+			this->radioButton1->Location = System::Drawing::Point(6, 19);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(85, 17);
+			this->radioButton1->TabIndex = 0;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"radioButton1";
+			this->radioButton1->UseVisualStyleBackColor = true;
+			// 
+			// radioButton2
+			// 
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(6, 42);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(85, 17);
+			this->radioButton2->TabIndex = 1;
+			this->radioButton2->Text = L"radioButton2";
+			this->radioButton2->UseVisualStyleBackColor = true;
+			// 
+			// radioButton3
+			// 
+			this->radioButton3->AutoSize = true;
+			this->radioButton3->Checked = true;
+			this->radioButton3->Location = System::Drawing::Point(7, 20);
+			this->radioButton3->Name = L"radioButton3";
+			this->radioButton3->Size = System::Drawing::Size(85, 17);
+			this->radioButton3->TabIndex = 0;
+			this->radioButton3->TabStop = true;
+			this->radioButton3->Text = L"radioButton3";
+			this->radioButton3->UseVisualStyleBackColor = true;
+			// 
+			// radioButton4
+			// 
+			this->radioButton4->AutoSize = true;
+			this->radioButton4->Location = System::Drawing::Point(7, 54);
+			this->radioButton4->Name = L"radioButton4";
+			this->radioButton4->Size = System::Drawing::Size(85, 17);
+			this->radioButton4->TabIndex = 1;
+			this->radioButton4->Text = L"radioButton4";
+			this->radioButton4->UseVisualStyleBackColor = true;
+			// 
 			// WF
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(643, 372);
+			this->Controls->Add(this->groupBox2);
+			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->textBox1);
@@ -145,6 +227,10 @@ namespace FEM {
 			this->Name = L"WF";
 			this->Text = L"WF";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
