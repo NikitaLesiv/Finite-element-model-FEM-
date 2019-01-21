@@ -137,6 +137,8 @@
     <ClCompile Include="WF.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="Objects.h" />
     <ClInclude Include="WF.h">
       <FileType>CppForm</FileType>
     </ClInclude>

@@ -1,6 +1,7 @@
 #include <cmath>
+#include "Objects.h"
+#include "Functions.h"
 #include "WF.h"
-
 
 using namespace System;
 using namespace System::Windows::Forms;
