@@ -79,7 +79,7 @@ namespace FEM {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(680, 27);
+			this->label1->Location = System::Drawing::Point(686, 40);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 2;
@@ -87,7 +87,7 @@ namespace FEM {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(677, 43);
+			this->textBox1->Location = System::Drawing::Point(683, 56);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(37, 20);
 			this->textBox1->TabIndex = 3;
@@ -96,7 +96,7 @@ namespace FEM {
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(779, 43);
+			this->textBox2->Location = System::Drawing::Point(785, 56);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(53, 20);
 			this->textBox2->TabIndex = 5;
@@ -106,7 +106,7 @@ namespace FEM {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(781, 27);
+			this->label2->Location = System::Drawing::Point(787, 40);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(15, 13);
 			this->label2->TabIndex = 4;
@@ -150,6 +150,12 @@ namespace FEM {
 
 	private: System::Void pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 	{
+		Point p[3];
+
+		
+		
+
+
 		// Рисуем линию	
 		e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
 		//e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
