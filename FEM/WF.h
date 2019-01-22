@@ -148,7 +148,7 @@ namespace FEM {
 			Pen^ mypen = gcnew Pen(Color::Yellow, 2);
 			array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
 			//Graphics^ zz=Graphics->DrawPolygon(System::Drawing::Pens::Green, points);
-			//g->FillPolygon(System::Drawing::Color::Red, points, );
+			////g->FillPolygon(System::Drawing::Color::Red, points, );
 			pictureBox1->Refresh();
 	
 		}
