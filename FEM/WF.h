@@ -116,7 +116,7 @@ namespace FEM {
 			// 
 			this->pictureBox1->Location = System::Drawing::Point(12, 12);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(815, 597);
+			this->pictureBox1->Size = System::Drawing::Size(600, 600);
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &WF::pictureBox1_Paint);
@@ -125,7 +125,7 @@ namespace FEM {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1023, 634);
+			this->ClientSize = System::Drawing::Size(1042, 663);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->label2);
@@ -144,12 +144,44 @@ namespace FEM {
 		private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
 		{
 			Graphics^ g = pictureBox1->CreateGraphics();
-			g->Clear(Color::Turquoise);
-			Pen^ mypen = gcnew Pen(Color::Yellow, 2);
+			g->Clear(Color::White);
+			SolidBrush^ mybrush = gcnew SolidBrush(Color::Yellow);
+			Pen^ mypen = gcnew Pen(Color::Red,2);
+			Pen^ mypen2 = gcnew Pen(Color::Blue, 2);
 			array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
-			//Graphics^ zz=Graphics->DrawPolygon(System::Drawing::Pens::Green, points);
+			//g->FillPolygon(mybrush, points);
+			g->DrawEllipse(mypen, 0, 0, 600, 600);
+			int uzli[30][30];
+			double x, y,r;
+			for (int i = 0; i < 30; i++)
+			{
+				for (int j = 0; j < 30; j++)
+				{
+					//uzli[i][j] = 
+					x = 300 - i * 20;
+					y = 300 - j * 20;
+					r = sqrt(x * x + y * y);
+					if (r <= 300)
+					{
+						g->DrawEllipse(mypen, i*20, j*20, 1, 1);
+						if (i % 1 == 0)
+						{
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20 + 20, j * 20 + 20);
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20 , j * 20 + 20);
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20 + 20, j * 20);
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20 - 20, j * 20 - 20);
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20, j * 20 - 20);
+							g->DrawLine(mypen2, i * 20, j * 20, i * 20 - 20, j * 20);
+						}
+						
+
+					}
+					 
+				}
+			}
+																						//Graphics^ zz=Graphics->DrawPolygon(System::Drawing::Pens::Green, points);
 			////g->FillPolygon(System::Drawing::Color::Red, points, );
-			pictureBox1->Refresh();
+			//pictureBox1->Refresh();
 	
 		}
 
@@ -157,11 +189,10 @@ namespace FEM {
 	{
 		
 		
-		
 		//Point p[3] = { Point(100,300), Point(300,200), Point(200,100) };
 		// Рисуем линию	
 		//e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
-		e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
+		//e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
 
 		//Graphics g;
 
