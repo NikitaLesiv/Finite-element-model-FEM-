@@ -79,7 +79,7 @@ namespace FEM {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(707, 27);
+			this->label1->Location = System::Drawing::Point(707, 151);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 2;
@@ -87,7 +87,7 @@ namespace FEM {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(704, 43);
+			this->textBox1->Location = System::Drawing::Point(704, 167);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(37, 20);
 			this->textBox1->TabIndex = 3;
