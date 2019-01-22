@@ -68,7 +68,7 @@ namespace FEM {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(704, 97);
+			this->button1->Location = System::Drawing::Point(704, 310);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(128, 38);
 			this->button1->TabIndex = 1;
