@@ -68,7 +68,7 @@ namespace FEM {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(873, 108);
+			this->button1->Location = System::Drawing::Point(704, 97);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(128, 38);
 			this->button1->TabIndex = 1;
@@ -79,7 +79,7 @@ namespace FEM {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(876, 17);
+			this->label1->Location = System::Drawing::Point(707, 27);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 2;
@@ -87,7 +87,7 @@ namespace FEM {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(873, 33);
+			this->textBox1->Location = System::Drawing::Point(704, 43);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(37, 20);
 			this->textBox1->TabIndex = 3;
@@ -96,7 +96,7 @@ namespace FEM {
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(975, 33);
+			this->textBox2->Location = System::Drawing::Point(779, 43);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(53, 20);
 			this->textBox2->TabIndex = 5;
@@ -106,7 +106,7 @@ namespace FEM {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(977, 17);
+			this->label2->Location = System::Drawing::Point(781, 27);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(15, 13);
 			this->label2->TabIndex = 4;
@@ -161,8 +161,7 @@ namespace FEM {
 		//Point p[3] = { Point(100,300), Point(300,200), Point(200,100) };
 		// Рисуем линию	
 		//e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
-		//e->Graphics->DrawPolygon(System::Drawing::Pens::Green, points);
-		//e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
+		e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
 
 		//Graphics g;
 
