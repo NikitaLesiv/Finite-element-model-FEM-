@@ -68,7 +68,7 @@ namespace FEM {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(704, 97);
+			this->button1->Location = System::Drawing::Point(704, 310);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(128, 38);
 			this->button1->TabIndex = 1;
@@ -79,7 +79,7 @@ namespace FEM {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(707, 27);
+			this->label1->Location = System::Drawing::Point(680, 27);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(18, 13);
 			this->label1->TabIndex = 2;
@@ -87,7 +87,7 @@ namespace FEM {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(704, 43);
+			this->textBox1->Location = System::Drawing::Point(677, 43);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(37, 20);
 			this->textBox1->TabIndex = 3;
@@ -151,10 +151,10 @@ namespace FEM {
 	private: System::Void pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 	{
 		// Рисуем линию	
-		//e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
-		e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
+		e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
+		//e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
 
-		Graphics g;
+		//Graphics g;
 
 
 	}
