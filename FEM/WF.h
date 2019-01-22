@@ -154,7 +154,7 @@ namespace FEM {
 		//e->Graphics->DrawLine(System::Drawing::Pens::Green, 10, 10, 200, 200);
 		e->Graphics->DrawEllipse(System::Drawing::Pens::Red, 10, 10, 200, 200);
 
-		Graphics g;
+		//Graphics g;
 
 
 	}
