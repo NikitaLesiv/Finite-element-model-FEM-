@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+//using namespace std;
 
 namespace FEM
 {
@@ -150,60 +152,38 @@ namespace FEM
 		Pen^ myPen2 = gcnew Pen(Color::Blue, 2);
 
 		g->Clear(Color::White);
-		array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
+		//array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
 
 		g->DrawEllipse(myPen, 0, 0, 600, 600);
 
-		point^ p1 = gcnew point(3, 3, "Green");
-		point^ p2 = gcnew point(5, 5, "Blue");
-		point^ p3 = gcnew point(1, 2, "Yellow");
-		
-		line^ l1 = gcnew line(p1, p2, "Red");
-		line^ l2 = gcnew line(p1, p3, "Red");
-		line^ l3 = gcnew line(p2, p3, "Red");
-
-		triangle^ t = gcnew triangle(p1, p2, p3, "Cyan");
-
-		p1->show(g, 600, 600, 6, 10);
-		p2->show(g, 600, 600, 6, 10);
-		p3->show(g, 600, 600, 6, 10);
-
-		l1->show(g, 600, 600, 6, 2);
-		l2->show(g, 600, 600, 6, 2);
-		l3->show(g, 600, 600, 6, 2);
-		
-		t->show(g, 600, 600, 6);
-		
-		
-/*
+		array <point^,2>^ points = gcnew array<point^,2>(600,600);
+		array <line^, 2>^ lines = gcnew array<line^, 2>(200, 200);
+		//std::vector <point^> points;
+		//vector <line^> lines;
+		//vector <triangle^> triangles;
+		/**/	
 		double x, y, r;
-		for (int i = 0; i < 30; i++)
+		for (int i = 0; i < 600; i++)
 		{
-			for (int j = 0; j < 30; j++)
+			for (int j = 0; j < 600; j++)
 			{
 
-				x = 300 - i * 20;
-				y = 300 - j * 20;
-				r = sqrt(x * x + y * y);
+//				x = 300 - i * 20;
+//				y = 300 - j * 20;
+//				r = sqrt(x * x + y * y);
 
-				if (r <= 300)
-				{
-					g->DrawEllipse(myPen, i * 20, j * 20, 1, 1);
-					if (i % 1 == 0)
-					{
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20 + 20, j * 20 + 20);
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20, j * 20 + 20);
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20 + 20, j * 20);
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20 - 20, j * 20 - 20);
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20, j * 20 - 20);
-						g->DrawLine(myPen2, i * 20, j * 20, i * 20 - 20, j * 20);
-					}
+//				if (r <= 300)
+//				{
+					points[i, j] = gcnew point(i, j);
+//					lines[i, j] = gcnew line(i * 20, j * 20);
+					//points[i,j]->show(g,600,600,600,2);
 
 
-				}
+
+//				}
 
 			}
-		}*/
+		}
 	}
 };
 }

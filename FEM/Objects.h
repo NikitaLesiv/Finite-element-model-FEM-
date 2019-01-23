@@ -91,6 +91,14 @@ public:
 		g->DrawLine(pen, x_s_px, y_s_px, x_f_px, y_f_px);
 	}
 
+	point^ center()
+	{
+		point^ tmp;
+		tmp->x = (p_s->x + p_f->x) / 2;
+		tmp->y = (p_s->y + p_f->y) / 2;
+		return tmp;
+	}
+
 	line^ operator= (line^ l)
 	{
 		line^ tmp;
@@ -151,6 +159,60 @@ public:
 	}
 
 	~triangle() // Деструктор
+	{
+
+	}
+};
+
+public ref class circle
+{
+public:
+	double x = 0, y = 0;
+	double radius = 1;
+	String^ color = "Black";
+
+	circle() // Конструктор
+	{
+
+	}
+	circle(double x_, double y_, double radius_) // Конструктор
+	{
+		x = x_;
+		y = y_;
+		radius = radius_;
+	}
+	circle(double x_, double y_, double radius_, String^ color_) // Конструктор
+	{
+		x = x_;
+		y = y_;
+		radius = radius_;
+		color = color_;
+	}
+
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int width)
+	{
+		Pen^ pen = gcnew Pen(Color::FromName(color), width);
+
+		int radius_x_px = (int)(radius * resolutions_x / scale);
+		int radius_y_px = (int)(radius * resolutions_y / scale);
+		int x_px = (int)(x * resolutions_x / scale) - radius_x_px / 2;
+		int y_px = (int)(y * resolutions_y / scale) - radius_y_px / 2;
+
+		g->DrawEllipse(pen, x_px, y_px, radius_x_px, radius_y_px);
+	}
+
+	circle^ operator= (circle^ c)
+	{
+		circle^ tmp;
+		tmp->x = c->x;
+		tmp->y = c->y;
+		tmp->radius = c->radius;
+		color = c->color;
+
+		return tmp;
+	}
+
+	~circle() // Деструктор
 	{
 
 	}
