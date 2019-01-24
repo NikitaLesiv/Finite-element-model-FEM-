@@ -155,7 +155,7 @@ namespace FEM
 		//array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
 		double Rc = 280, d = 1,d1;
 		g->DrawEllipse(myPen, 0, 0, 560, 560);
-
+		//
 		array <point^,2>^ points = gcnew array<point^,2>(60,60);
 		array <line^, 2>^ lines = gcnew array<line^, 2>(200, 200);
 		//std::vector <point^> points;
