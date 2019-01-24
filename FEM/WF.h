@@ -153,34 +153,60 @@ namespace FEM
 
 		g->Clear(Color::White);
 		//array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
+		double Rc = 280, d = 1,d1;
+		g->DrawEllipse(myPen, 0, 0, 560, 560);
 
-		g->DrawEllipse(myPen, 0, 0, 600, 600);
-
-		array <point^,2>^ points = gcnew array<point^,2>(600,600);
+		array <point^,2>^ points = gcnew array<point^,2>(60,60);
 		array <line^, 2>^ lines = gcnew array<line^, 2>(200, 200);
 		//std::vector <point^> points;
 		//vector <line^> lines;
 		//vector <triangle^> triangles;
 		/**/	
-		double x, y, r;
-		for (int i = 0; i < 600; i++)
+		double x, y, r,alpha, pi=3.141592654;
+		int sign = 1;
+		for (int i = 0; i < 60; i++)
 		{
-			for (int j = 0; j < 600; j++)
+			for (int j = 0; j < 60; j++)
 			{
 
-//				x = 300 - i * 20;
-//				y = 300 - j * 20;
-//				r = sqrt(x * x + y * y);
+				x = 280 - i * 10;
+				y = 280 - j * 10;
+				r = sqrt(x * x + y * y);
+				if (y > 0)
+				{
+					alpha = acos(x / r);
+				}
+				else
+				{
+					alpha = 2 * pi - acos(x / r);
+				}
 
-//				if (r <= 300)
-//				{
-					points[i, j] = gcnew point(i, j);
-//					lines[i, j] = gcnew line(i * 20, j * 20);
-					//points[i,j]->show(g,600,600,600,2);
+				d1 = d * (1 + pow(cos(2*(alpha - pi / 4)),2));
+
+				if ((r <Rc+d1) && (r > Rc-d1))
+				{
+
+					x = Rc * cos(alpha);
+					y = Rc * sin(alpha);
+					
+					points[i, j] = gcnew point(x + Rc, y + Rc);
+					points[i, j]->color = "blue";
+					points[i, j]->border = true;
+					points[i, j]->show(g, 600, 600, 600, 8);
+				}
+
+				if (r < Rc-d1)
+				{
+					points[i, j] = gcnew point(x+Rc, y+Rc);
+					points[i, j]->color = "red";
+					points[i, j]->border = false;
+					//lines[i, j] = gcnew line(i * 20, j * 20);
+					points[i,j]->show(g,600,600,600,3);
+
+					
 
 
-
-//				}
+				}
 
 			}
 		}

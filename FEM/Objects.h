@@ -12,6 +12,7 @@ public ref class point
 {
 public:
 	double x = 0, y = 0;
+	bool border;
 	String^ color = "Black";
 
 	point() // Конструктор
