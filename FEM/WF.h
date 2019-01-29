@@ -1,6 +1,8 @@
 #pragma once
-#include <vector>
-//using namespace std;
+#include <cmath>
+#include "Objects.h"
+#include "Functions.h"
+
 
 namespace FEM
 {
@@ -44,8 +46,6 @@ namespace FEM
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
-
-
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -147,23 +147,60 @@ namespace FEM
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		Graphics^ g = pictureBox1->CreateGraphics();
-		SolidBrush^ myBrush = gcnew SolidBrush(Color::Yellow);
 		Pen^ myPen = gcnew Pen(Color::Red, 2);
-		Pen^ myPen2 = gcnew Pen(Color::Blue, 2);
-
 		g->Clear(Color::White);
-		//array <Point>^ points = { Point(100,200), Point(200,300), Point(300,100) }; //массив неуправляемого класса point
-		double Rc = 280, d = 1,d1;
-		g->DrawEllipse(myPen, 0, 0, 560, 560);
-		//
-		array <point^,2>^ points = gcnew array<point^,2>(60,60);
-		array <line^, 2>^ lines = gcnew array<line^, 2>(200, 200);
-		//std::vector <point^> points;
-		//vector <line^> lines;
-		//vector <triangle^> triangles;
-		/**/	
-		double x, y, r,alpha, pi=3.141592654;
-		int sign = 1;
+
+		int x_res = 600, y_res = 600, scale = 600; // Разрешение и машстаб
+		
+		//g->DrawEllipse(myPen, 0, 0, 560, 560);
+	
+		array <line^ , 2>^ lines  = gcnew array<line^ , 2>(200, 200);
+		
+		double Rc = 280, d = 1, d1;
+		double x, y, r, alpha;
+
+		int N = 100; // Число точек на границе
+		double R = 300; // Радиус окружности
+
+		//array <point^, 2>^ points = gcnew array<point^, 2>(N, N);
+		array <point^>^ points = gcnew array<point^>(N + 1);
+
+		
+		double dr = R / 10;
+
+		for (double r = 0; r <= R; r += dr)
+		{
+			int n = N * r / R;
+			double d_phi = 2 * Pi / n;
+
+			if (n == 0)
+			{
+				points[N] = gcnew point(R, R, "red");
+			}
+
+			for (int i = 0; i < n; i++)
+			{
+				x = r * cos(i * d_phi) + R;
+				y = r * sin(i * d_phi) + R;
+
+				if (r == R)
+				{
+					points[i] = gcnew point(x, y, "blue");
+				}
+				else
+				{
+					points[i] = gcnew point(x, y, "red");
+				}
+				points[i]->show(g, x_res, y_res, scale, 8);
+
+			}
+		}
+		
+		
+		
+	/*
+
+
 		for (int i = 0; i < 60; i++)
 		{
 			for (int j = 0; j < 60; j++)
@@ -178,12 +215,12 @@ namespace FEM
 				}
 				else
 				{
-					alpha = 2 * pi - acos(x / r);
+					alpha = 2 * Pi - acos(x / r);
 				}
 
-				d1 = d * (1 + pow(cos(2*(alpha - pi / 4)),2));
+				d1 = d * (1 + pow(cos(2*(alpha - Pi / 4)),2));
 
-				if ((r <Rc+d1) && (r > Rc-d1))
+				if (abs(r - Rc) < d1)
 				{
 
 					x = Rc * cos(alpha);
@@ -197,19 +234,15 @@ namespace FEM
 
 				if (r < Rc-d1)
 				{
-					points[i, j] = gcnew point(x+Rc, y+Rc);
+					points[i, j] = gcnew point(x +Rc, y+Rc);
 					points[i, j]->color = "red";
 					points[i, j]->border = false;
-					//lines[i, j] = gcnew line(i * 20, j * 20);
-					points[i,j]->show(g,600,600,600,3);
-
-					
-
-
+					points[i, j]->show(g,600,600,600,3);
 				}
 
 			}
 		}
+	*/
 	}
 };
 }
