@@ -150,14 +150,27 @@ namespace FEM
 		Pen^ myPen = gcnew Pen(Color::Red, 2);
 		g->Clear(Color::White);
 
-		int x_res = 600, y_res = 600, scale = 600; // Разрешение и машстаб
+		int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
+
+		point^ p1 = gcnew point(230, 100);
+		point^ p2 = gcnew point(500, 225);
+		point^ p3 = gcnew point(100, 500);
+
+		triangle^ t = gcnew triangle(p1, p2, p3);
+
+		circle^ c = t->circumscribed_circle();
+		c->color = "blue";
+
+		t->show(g, x_res, y_res, scale);
+		c->show(g, x_res, y_res, scale, 2);
 		
+	/*
 		//g->DrawEllipse(myPen, 0, 0, 560, 560);
 	
 		array <line^ , 2>^ lines  = gcnew array<line^ , 2>(200, 200);
 		
-		double Rc = 280, d = 1, d1;
-		double x, y, r, alpha;
+		// double Rc = 280, d = 1, d1;
+		double x, y, r; // , alpha;
 
 		int N = 100; // Число точек на границе
 		double R = 300; // Радиус окружности
@@ -170,13 +183,8 @@ namespace FEM
 
 		for (double r = 0; r <= R; r += dr)
 		{
-			int n = N * r / R;
+			int n = N * r / R + 1;
 			double d_phi = 2 * Pi / n;
-
-			if (n == 0)
-			{
-				points[N] = gcnew point(R, R, "red");
-			}
 
 			for (int i = 0; i < n; i++)
 			{
@@ -186,6 +194,7 @@ namespace FEM
 				if (r == R)
 				{
 					points[i] = gcnew point(x, y, "blue");
+					points[i]->border = true;
 				}
 				else
 				{
@@ -196,7 +205,7 @@ namespace FEM
 			}
 		}
 		
-		
+	*/	
 		
 	/*
 

@@ -12,7 +12,7 @@ public ref class point
 {
 public:
 	double x = 0, y = 0;
-	bool border;
+	bool border = false;
 	String^ color = "Black";
 
 	point() // Конструктор
@@ -35,10 +35,17 @@ public:
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 		
-		int x_px = (int)(x * resolutions_x / scale) - diameter / 2;
-		int y_px = (int)(y * resolutions_y / scale) - diameter / 2;
+		int x_px = static_cast<int>(x * resolutions_x / scale) - diameter / 2;
+		int y_px = static_cast<int>(y * resolutions_y / scale) - diameter / 2;
 
 		g->FillEllipse(brush, x_px, y_px, diameter, diameter);
+	}
+
+	double distance(point^ p)
+	{
+		double dist = sqrt(pow(x - p->x, 2) + pow(y - p->y, 2));
+
+		return dist;
 	}
 
 	point^ operator= (point^ p)
@@ -46,7 +53,7 @@ public:
 		point^ tmp;
 		tmp->x = p->x;
 		tmp->y = p->y;
-		color = p->color;
+		tmp->color  = p->color;
 
 		return tmp;
 	}
@@ -63,58 +70,174 @@ public:
 	point^ p_s = gcnew point(0, 0);
 	point^ p_f = gcnew point(1, 1);
 	String^ color = "Black";
+	double k = 1; // Коэффициент наклона отрезка по отношению к оси ОХ (y = kx + b)
+	double b = 0; // Смещение отрезка по отношению к оси ОХ (y = kx + b)
 
+public:
 	line() // Конструктор
 	{
 	
 	}
-	line(point^ p_s_, point^ p_f_) // Конструктор
+	line(point^ p_s, point^ p_f) // Конструктор
 	{
-		p_s = p_s_;
-		p_f = p_f_;
+		this->p_s = p_s;
+		this->p_f = p_f;
+		b = (p_s->y * p_f->x - p_f->y * p_s->x) / (p_f->x - p_s->x);
+		k = (p_f->y - p_s->y) / (p_f->x - p_s->x);
 	}
-	line(point^ p_s_, point^ p_f_, String^ color_) // Конструктор
+	line(point^ p_s, point^ p_f, String^ color) // Конструктор
 	{
-		p_s = p_s_;
-		p_f = p_f_;
-		color = color_;
+		this->p_s = p_s;
+		this->p_f = p_f;
+		b = (p_s->y * p_f->x - p_f->y * p_s->x) / (p_f->x - p_s->x);
+		k = (p_f->y - p_s->y) / (p_f->x - p_s->x);
+		this->color = color;
 	}
 
 	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, float width)
 	{
 		Pen^ pen = gcnew Pen(Color::FromName(color), width);
 
-		int x_s_px = (int)(p_s->x * resolutions_x / scale);
-		int y_s_px = (int)(p_s->y * resolutions_y / scale);
-		int x_f_px = (int)(p_f->x * resolutions_x / scale);
-		int y_f_px = (int)(p_f->y * resolutions_y / scale);
+		int x_s_px = static_cast<int>(p_s->x * resolutions_x / scale);
+		int y_s_px = static_cast<int>(p_s->y * resolutions_y / scale);
+		int x_f_px = static_cast<int>(p_f->x * resolutions_x / scale);
+		int y_f_px = static_cast<int>(p_f->y * resolutions_y / scale);
 
 		g->DrawLine(pen, x_s_px, y_s_px, x_f_px, y_f_px);
 	}
 
 	point^ center()
 	{
-		point^ tmp;
+		point^ tmp = gcnew point();
+
 		tmp->x = (p_s->x + p_f->x) / 2;
 		tmp->y = (p_s->y + p_f->y) / 2;
+
+		return tmp;
+	}
+
+	point^ intersection_point(line^ l)
+	{
+		point^ tmp = gcnew point();
+
+		double k1 = k, k2 = l->k;
+		double b1 = b, b2 = l->b;
+
+		tmp->x = (b1 - b2) / (k2 - k1);
+		tmp->y = k1 * tmp->x + b1;
+
+		return tmp;
+	}
+
+	bool intersect(line^ l)
+	{
+		bool tmp;
+		point^ i_p = (gcnew line(p_s, p_f))->intersection_point(l);
+		double x1, x2, y1, y2;
+
+		if (p_s->x <= p_f->x)
+		{
+			x1 = p_s->x;
+			x2 = p_f->x;
+		}
+		else
+		{
+			x1 = p_f->x;
+			x2 = p_s->x;
+		}
+
+		if (p_s->y <= p_f->y)
+		{
+			y1 = p_s->y;
+			y2 = p_f->y;
+		}
+		else
+		{
+			y1 = p_f->y;
+			y2 = p_s->y;
+		}
+
+		bool condition = (x1 < i_p->x) && (x2 > i_p->x) && (y1 < i_p->y) && (y2 > i_p->y);
+
+		if (condition)
+		{
+			tmp = true;
+		}
+		else
+		{
+			tmp = false;
+		}
+
 		return tmp;
 	}
 
 	line^ operator= (line^ l)
 	{
-		line^ tmp;
+		this->p_s = l->p_s;
+		this->p_f = l->p_f;
+		this->color = l->color;
 
-		tmp->p_s = l->p_s;
-		tmp->p_f = l->p_f;
-		tmp->color = l->color;
-
-		return tmp;
+		return this;
 	}
 
 	~line() // Деструктор
 	{
 
 	} 
+};
+
+public ref class circle
+{
+public:
+	double x = 0, y = 0; // Координаты центра окружности
+	double R = 1; // Радиус окружности
+	String^ color = "Black";
+
+	circle() // Конструктор
+	{
+
+	}
+	circle(double x_, double y_, double R_) // Конструктор
+	{
+		this->x = x;
+		this->y = y;
+		this->R = R;
+	}
+	circle(double x, double y, double R, String^ color) // Конструктор
+	{
+		this->x = x;
+		this->y = y;
+		this->R = R;
+		this->color = color;
+	}
+
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, float width)
+	{
+		Pen^ pen = gcnew Pen(Color::FromName(color), width);
+
+		int radius_x_px = static_cast<int>(R * resolutions_x / scale);
+		int radius_y_px = static_cast<int>(R * resolutions_y / scale);
+		int x_px = static_cast<int>(x * resolutions_x / scale) - radius_x_px;
+		int y_px = static_cast<int>(y * resolutions_y / scale) - radius_y_px;
+
+		g->DrawEllipse(pen, x_px, y_px, 2 * radius_x_px, 2 * radius_y_px);
+	}
+
+	circle^ operator= (circle^ c)
+	{
+		circle^ tmp;
+		tmp->x = c->x;
+		tmp->y = c->y;
+		tmp->R = c->R;
+		color = c->color;
+
+		return tmp;
+	}
+
+	~circle() // Деструктор
+	{
+
+	}
 };
 
 public ref class triangle
@@ -125,95 +248,58 @@ public:
 	point^ p_3 = gcnew point(3, 4);
 	String^ color = "Black";
 
+public:
 	triangle() // Конструктор
 	{
 
 	}
-	triangle(point^ p_1_, point^ p_2_, point^ p_3_) // Конструктор
+	triangle(point^ p_1, point^ p_2, point^ p_3) // Конструктор
 	{
-		p_1 = p_1_;
-		p_2 = p_2_;
-		p_3 = p_3_;
+		this->p_1 = p_1;
+		this->p_2 = p_2;
+		this->p_3 = p_3;
 	}
-	triangle(point^ p_1_, point^ p_2_, point^ p_3_, String^ color_) // Конструктор
+	triangle(point^ p_1, point^ p_2, point^ p_3, String^ color) // Конструктор
 	{
-		p_1 = p_1_;
-		p_2 = p_2_;
-		p_3 = p_3_;
-		color = color_;
+		this->p_1 = p_1;
+		this->p_2 = p_2;
+		this->p_3 = p_3;
+		this->color = color;
 	}
 
 	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale)
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 
-		int x_1_px = (int)(p_1->x * resolutions_x / scale);
-		int y_1_px = (int)(p_1->y * resolutions_y / scale);
-		int x_2_px = (int)(p_2->x * resolutions_x / scale);
-		int y_2_px = (int)(p_2->y * resolutions_y / scale);
-		int x_3_px = (int)(p_3->x * resolutions_x / scale);
-		int y_3_px = (int)(p_3->y * resolutions_y / scale);
+		int x_1_px = static_cast<int>(p_1->x * resolutions_x / scale);
+		int y_1_px = static_cast<int>(p_1->y * resolutions_y / scale);
+		int x_2_px = static_cast<int>(p_2->x * resolutions_x / scale);
+		int y_2_px = static_cast<int>(p_2->y * resolutions_y / scale);
+		int x_3_px = static_cast<int>(p_3->x * resolutions_x / scale);
+		int y_3_px = static_cast<int>(p_3->y * resolutions_y / scale);
 
 		array <Point>^ points = { Point(x_1_px, y_1_px), Point(x_2_px, y_2_px), Point(x_3_px, y_3_px) };
 
 		g->FillPolygon(brush, points);
 	}
 
-	~triangle() // Деструктор
+	circle^ circumscribed_circle()
 	{
+		circle^ tmp = gcnew circle();
 
-	}
-};
+		double x1 = p_1->x, x2 = p_2->x, x3 = p_3->x;
+		double y1 = p_1->y, y2 = p_2->y, y3 = p_3->y;
+		
+		double D = 2 * (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));
 
-public ref class circle
-{
-public:
-	double x = 0, y = 0;
-	double radius = 1;
-	String^ color = "Black";
-
-	circle() // Конструктор
-	{
-
-	}
-	circle(double x_, double y_, double radius_) // Конструктор
-	{
-		x = x_;
-		y = y_;
-		radius = radius_;
-	}
-	circle(double x_, double y_, double radius_, String^ color_) // Конструктор
-	{
-		x = x_;
-		y = y_;
-		radius = radius_;
-		color = color_;
-	}
-
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int width)
-	{
-		Pen^ pen = gcnew Pen(Color::FromName(color), width);
-
-		int radius_x_px = (int)(radius * resolutions_x / scale);
-		int radius_y_px = (int)(radius * resolutions_y / scale);
-		int x_px = (int)(x * resolutions_x / scale) - radius_x_px / 2;
-		int y_px = (int)(y * resolutions_y / scale) - radius_y_px / 2;
-
-		g->DrawEllipse(pen, x_px, y_px, radius_x_px, radius_y_px);
-	}
-
-	circle^ operator= (circle^ c)
-	{
-		circle^ tmp;
-		tmp->x = c->x;
-		tmp->y = c->y;
-		tmp->radius = c->radius;
-		color = c->color;
+		tmp->x = ((pow(x1, 2) + pow(y1, 2)) * (y2 - y3) + (pow(x2, 2) + pow(y2, 2)) * (y3 - y1) + (pow(x3, 2) + pow(y3, 2)) * (y1 - y2)) / D;
+		tmp->y = ((pow(x1, 2) + pow(y1, 2)) * (x3 - x2) + (pow(x2, 2) + pow(y2, 2)) * (x1 - x3) + (pow(x3, 2) + pow(y3, 2)) * (x2 - x1)) / D;
+		tmp->R = (gcnew point(tmp->x, tmp->y))->distance(p_2);
 
 		return tmp;
 	}
 
-	~circle() // Деструктор
+	~triangle() // Деструктор
 	{
 
 	}
