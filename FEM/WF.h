@@ -163,13 +163,13 @@ namespace FEM
 		circle^ c = gcnew circle(p3, 100); //t->circumscribed_circle();
 		c->color = "blue";
 
-		point^ p4 = c->intersection_point(l)[0];
-		point^ p5 = c->intersection_point(l)[1];
+		p1 = c->intersection_point(l)[0];
+		p2 = c->intersection_point(l)[1];
 
 		//t->show(g, x_res, y_res, scale);
 		c->show(g, x_res, y_res, scale, 2);
-		p4->show(g, x_res, y_res, scale, 8);
-		p5->show(g, x_res, y_res, scale, 8);
+		p1->show(g, x_res, y_res, scale, 8);
+		p2->show(g, x_res, y_res, scale, 8);
 		l->show(g, x_res, y_res, scale, 2);
 		
 	/*
