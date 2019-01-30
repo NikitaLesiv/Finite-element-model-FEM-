@@ -152,17 +152,25 @@ namespace FEM
 
 		int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		point^ p1 = gcnew point(230, 100);
-		point^ p2 = gcnew point(500, 225);
-		point^ p3 = gcnew point(100, 500);
+		point^ p1 = gcnew point(100, 100);
+		point^ p2 = gcnew point(550, 500);
+		point^ p3 = gcnew point(300, 300);
 
-		triangle^ t = gcnew triangle(p1, p2, p3);
+		line^ l = gcnew line(p1, p2);
 
-		circle^ c = t->circumscribed_circle();
+		//triangle^ t = gcnew triangle(p1, p2, p3);
+
+		circle^ c = gcnew circle(p3, 100); //t->circumscribed_circle();
 		c->color = "blue";
 
-		t->show(g, x_res, y_res, scale);
+		point^ p4 = c->intersection_point(l)[0];
+		point^ p5 = c->intersection_point(l)[1];
+
+		//t->show(g, x_res, y_res, scale);
 		c->show(g, x_res, y_res, scale, 2);
+		p4->show(g, x_res, y_res, scale, 8);
+		p5->show(g, x_res, y_res, scale, 8);
+		l->show(g, x_res, y_res, scale, 2);
 		
 	/*
 		//g->DrawEllipse(myPen, 0, 0, 560, 560);

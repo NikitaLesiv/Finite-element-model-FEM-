@@ -50,12 +50,11 @@ public:
 
 	point^ operator= (point^ p)
 	{
-		point^ tmp;
-		tmp->x = p->x;
-		tmp->y = p->y;
-		tmp->color  = p->color;
+		this->x = p->x;
+		this->y = p->y;
+		this->color  = p->color;
 
-		return tmp;
+		return this;
 	}
 
 	~point() // Деструктор
@@ -197,7 +196,7 @@ public:
 	{
 
 	}
-	circle(double x_, double y_, double R_) // Конструктор
+	circle(double x, double y, double R) // Конструктор
 	{
 		this->x = x;
 		this->y = y;
@@ -207,6 +206,19 @@ public:
 	{
 		this->x = x;
 		this->y = y;
+		this->R = R;
+		this->color = color;
+	}
+	circle(point^ p, double R) // Конструктор
+	{
+		this->x = p->x;
+		this->y = p->y;
+		this->R = R;
+	}
+	circle(point^ p, double R, String^ color) // Конструктор
+	{
+		this->x = p->x;
+		this->y = p->y;
 		this->R = R;
 		this->color = color;
 	}
@@ -221,6 +233,49 @@ public:
 		int y_px = static_cast<int>(y * resolutions_y / scale) - radius_y_px;
 
 		g->DrawEllipse(pen, x_px, y_px, 2 * radius_x_px, 2 * radius_y_px);
+	}
+
+	array <point^>^ intersection_point(line^ l)
+	{
+		array <point^>^ points = gcnew array <point^>(2);
+		double k = l->k, b = l->b;
+		double x0 = x, y0 = y;
+
+		double A = pow(k, 2) + 1;
+		double B = 2 * k * (b - y0 - (x0 / k));
+		double C = pow(b, 2) + pow(y0, 2) - 2 * y0 * b + pow(x0, 2) - pow(R, 2);
+		double D = pow(B, 2) - 4 * A * C;
+
+		double x1 = (-B + sqrt(D)) / (2 * A);
+		double x2 = (-B - sqrt(D)) / (2 * A);
+		double y1 = k * x1 + b;
+		double y2 = k * x2 + b;
+
+		points[0] = gcnew point(x1, y1);
+		points[1] = gcnew point(x2, y2);
+		
+
+		return points;
+	}
+
+	bool intersect(circle^ c)
+	{
+		bool tmp;
+		//point^ i_p = (gcnew line(p_s, p_f))->intersection_point(l);
+
+
+		bool condition = 1;
+
+		if (condition)
+		{
+			tmp = true;
+		}
+		else
+		{
+			tmp = false;
+		}
+
+		return tmp;
 	}
 
 	circle^ operator= (circle^ c)
