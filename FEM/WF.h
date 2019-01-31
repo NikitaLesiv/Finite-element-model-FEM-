@@ -147,45 +147,17 @@ namespace FEM
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		Graphics^ g = pictureBox1->CreateGraphics();
-		Pen^ myPen = gcnew Pen(Color::Red, 2);
-		g->Clear(Color::White);
-
+		g->Clear(Color::White);	
+		
 		int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		point^ p1 = gcnew point(100, 100);
-		point^ p2 = gcnew point(550, 500);
-		point^ p3 = gcnew point(300, 300);
-
-		line^ l = gcnew line(p1, p2);
-
-		//triangle^ t = gcnew triangle(p1, p2, p3);
-
-		circle^ c = gcnew circle(p3, 100); //t->circumscribed_circle();
-		c->color = "blue";
-
-		p1 = c->intersection_point(l)[0];
-		p2 = c->intersection_point(l)[1];
-
-		//t->show(g, x_res, y_res, scale);
-		c->show(g, x_res, y_res, scale, 2);
-		p1->show(g, x_res, y_res, scale, 8);
-		p2->show(g, x_res, y_res, scale, 8);
-		l->show(g, x_res, y_res, scale, 2);
-		
-	/*
-		//g->DrawEllipse(myPen, 0, 0, 560, 560);
-	
-		array <line^ , 2>^ lines  = gcnew array<line^ , 2>(200, 200);
-		
-		// double Rc = 280, d = 1, d1;
 		double x, y, r; // , alpha;
 
 		int N = 100; // Число точек на границе
 		double R = 300; // Радиус окружности
-
-		//array <point^, 2>^ points = gcnew array<point^, 2>(N, N);
-		array <point^>^ points = gcnew array<point^>(N + 1);
-
+		
+		array <point ^> ^points = gcnew array<point ^>(N + 2);
+		array <line  ^> ^lines  = gcnew array<line  ^>(N + 2);
 		
 		double dr = R / 10;
 
@@ -194,7 +166,7 @@ namespace FEM
 			int n = N * r / R + 1;
 			double d_phi = 2 * Pi / n;
 
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i <= n; i++)
 			{
 				x = r * cos(i * d_phi) + R;
 				y = r * sin(i * d_phi) + R;
@@ -208,15 +180,23 @@ namespace FEM
 				{
 					points[i] = gcnew point(x, y, "red");
 				}
-				points[i]->show(g, x_res, y_res, scale, 8);
 
+				if (i != 0)
+				{
+					lines[i] = gcnew line(points[i - 1], points[i], "green");
+					lines[i]->show(g, x_res, y_res, scale, 2);
+				}
+
+				points[i]->show(g, x_res, y_res, scale, 8);	
 			}
 		}
 		
-	*/	
-		
 	/*
-
+		Pen^ myPen = gcnew Pen(Color::Red, 2);
+		g->DrawEllipse(myPen, 0, 0, 560, 560);
+		array <line^ , 2>^ lines  = gcnew array<line^ , 2>(200, 200);
+		//array <point ^, 2> ^points = gcnew array<point ^, 2>(N, N);
+		double Rc = 280, d = 1, d1;
 
 		for (int i = 0; i < 60; i++)
 		{

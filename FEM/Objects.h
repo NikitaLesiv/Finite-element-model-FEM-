@@ -57,6 +57,13 @@ public:
 		return this;
 	}
 
+	bool operator== (point^ p)
+	{
+		bool condition = (this->x == p->x) && (this->y == p->y) && (this->color == p->color);
+
+		return condition;
+	}
+
 	~point() // Деструктор
 	{
 
@@ -131,6 +138,7 @@ public:
 	bool intersect(line^ l)
 	{
 		bool tmp;
+
 		point^ i_p = (gcnew line(p_s, p_f))->intersection_point(l);
 		double x1, x2, y1, y2;
 
@@ -158,14 +166,7 @@ public:
 
 		bool condition = (x1 < i_p->x) && (x2 > i_p->x) && (y1 < i_p->y) && (y2 > i_p->y);
 
-		if (condition)
-		{
-			tmp = true;
-		}
-		else
-		{
-			tmp = false;
-		}
+		tmp = condition;
 
 		return tmp;
 	}
@@ -254,29 +255,22 @@ public:
 		points[0] = gcnew point(x1, y1);
 		points[1] = gcnew point(x2, y2);
 		
-
 		return points;
 	}
 
-	bool intersect(circle^ c)
+/*
+	bool intersect(line^ l)
 	{
 		bool tmp;
 		//point^ i_p = (gcnew line(p_s, p_f))->intersection_point(l);
 
-
 		bool condition = 1;
 
-		if (condition)
-		{
-			tmp = true;
-		}
-		else
-		{
-			tmp = false;
-		}
+		tmp = condition;
 
 		return tmp;
 	}
+*/
 
 	circle^ operator= (circle^ c)
 	{
