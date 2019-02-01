@@ -353,3 +353,68 @@ public:
 
 	}
 };
+
+
+public ref class polygon
+{
+public:
+	int N; // Номер полигона
+	int nv; // Число вершин и ребер
+	bool border = false;
+	String^ color = "Black";
+
+	polygon() // Конструктор
+	{
+
+	}
+	polygon(double x_, double y_) // Конструктор
+	{
+		//x = x_;
+		//y = y_;
+	}
+	polygon(double x_, double y_, String^ color_) // Конструктор
+	{
+		//x = x_;
+		//y = y_;
+		color = color_;
+	}
+
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int diameter)
+	{
+		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
+
+		int x_px = 1;// static_cast<int>(x * resolutions_x / scale) - diameter / 2;
+		int y_px = 1;// static_cast<int>(y * resolutions_y / scale) - diameter / 2;
+
+		g->FillEllipse(brush, x_px, y_px, diameter, diameter);
+	}
+
+	double distance(polygon^ p)
+	{
+		double dist = 1;//sqrt(pow(x - p->x, 2) + pow(y - p->y, 2));
+
+		return dist;
+	}
+
+	polygon^ operator= (polygon^ p)
+	{
+		//this->x = p->x;
+		//this->y = p->y;
+		this->color = p->color;
+
+		return this;
+	}
+
+	bool operator== (polygon^ p)
+	{
+		bool condition = 1;
+
+		return condition;
+	}
+
+	~polygon() // Деструктор
+	{
+
+	}
+};
+

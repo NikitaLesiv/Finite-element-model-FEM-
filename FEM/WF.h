@@ -149,8 +149,42 @@ namespace FEM
 		Graphics^ g = pictureBox1->CreateGraphics();
 		g->Clear(Color::White);	
 		
-		int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
+		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
+		point^ p1 = gcnew point(5, 5, "red");
+		point^ p2 = gcnew point(400, 400, "red");
+		point^ p3 = gcnew point(5, 100, "red");
+		point^ p4 = gcnew point(5, 400, "red");
+
+		line^ l1 = gcnew line(p1, p2, "blue");
+		line^ l2 = gcnew line(p3, p4, "red");
+
+		if (l1->intersect(l2)) 
+		{
+			point^ p5 = l1->intersection_point(l2);
+			l1->show(g, x_res, y_res, scale, 5);
+			l2->show(g, x_res, y_res, scale, 5);
+			p5->show(g, x_res, y_res, scale, 8);
+		}
+
+		polygon^ pol = gcnew polygon();
+
+		pol->N = 5;
+
+
+		/*
+		point^ p1 = gcnew point(50, 150, "red");
+		point^ p2 = gcnew point(100, 200, "red");
+		point^ p3 = gcnew point(300, 200, "red");
+		triangle^ t = gcnew triangle(p1, p2, p3, "blue");
+		t->show(g,x_res, y_res, scale);
+		p1->show(g, x_res, y_res, scale, 8);
+		p2->show(g, x_res, y_res, scale, 8);
+		p3->show(g, x_res, y_res, scale, 8);
+		circle^ c1 = t->circumscribed_circle();
+		c1->show(g, x_res, y_res, scale, 8);
+		*/
+		/*
 		double x, y, r; // , alpha;
 
 		int N = 100; // Число точек на границе
@@ -190,7 +224,7 @@ namespace FEM
 				points[i]->show(g, x_res, y_res, scale, 8);	
 			}
 		}
-		
+	*/	
 	/*
 		Pen^ myPen = gcnew Pen(Color::Red, 2);
 		g->DrawEllipse(myPen, 0, 0, 560, 560);
