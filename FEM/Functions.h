@@ -32,7 +32,7 @@ List <T> ^array_to_list(array <T> ^arr)
 {
 	List <T> ^list = gcnew List <T>;
 
-	for each (line ^i in arr)
+	for each (auto ^i in arr)
 	{
 		list->Add(i);
 	}
