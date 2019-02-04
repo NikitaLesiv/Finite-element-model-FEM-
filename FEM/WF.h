@@ -4,7 +4,6 @@
 #include "Objects.h"
 #include "Functions.h"
 
-
 namespace FEM
 {
 
@@ -153,8 +152,22 @@ namespace FEM
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
+		double df=2*Pi/30, x, y, x0=300, y0=300, R=250;
 		polygon ^pol = gcnew polygon(); 
-
+		pol->points->Clear();
+		for (int i = 0; i < 30; i++) 
+		{
+			x = R * cos(i*df) + x0;
+			y = R * sin(i*df) + y0;
+			pol->points->Add(gcnew point(x, y, "red"));
+		}
+		List<line ^> ^ourlist = pol->list_of_border_lines();
+		//pol->show(g,x_res, y_res, scale);
+		for each (line ^L in ourlist)
+		{
+			L->show(g, x_res, y_res, scale, 2);
+		}
+		
 		polygon ^pol_1 = pol->bisection(5)[0];
 		polygon ^pol_2 = pol->bisection(5)[1];
 		
@@ -180,7 +193,7 @@ namespace FEM
 			i->p_f->show(g, x_res, y_res, scale, 8);
 			i->show(g, x_res, y_res, scale, 2);
 		}
-
+         /**/
 
 /*
 		point^ p1 = gcnew point(5, 5, "red");
