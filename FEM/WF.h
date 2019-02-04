@@ -148,7 +148,7 @@ namespace FEM
 
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		Graphics^ g = pictureBox1->CreateGraphics();
+		Graphics ^g = pictureBox1->CreateGraphics();
 		g->Clear(Color::White);	
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
