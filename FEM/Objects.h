@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -7,31 +6,33 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
+using namespace System::Collections::Generic;
 
 public ref class point
 {
 public:
+	int N = 0; // Номер точки
 	double x = 0, y = 0;
 	bool border = false;
-	String^ color = "Black";
+	String ^color = "Black";
 
 	point() // Конструктор
 	{
 
 	}
-	point(double x_, double y_) // Конструктор
+	point(double x, double y) // Конструктор
 	{
-		x = x_;
-		y = y_;
+		this->x = x;
+		this->y = y;
 	}
-	point(double x_, double y_, String^ color_) // Конструктор
+	point(double x, double y, String ^color) // Конструктор
 	{
-		x = x_;
-		y = y_;
-		color = color_;
+		this->x = x;
+		this->y = y;
+		this->color = color;
 	}
 
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int diameter)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale, int diameter)
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 		
@@ -41,14 +42,14 @@ public:
 		g->FillEllipse(brush, x_px, y_px, diameter, diameter);
 	}
 
-	double distance(point^ p)
+	double distance(point ^p)
 	{
 		double dist = sqrt(pow(x - p->x, 2) + pow(y - p->y, 2));
 
 		return dist;
 	}
 
-	point^ operator= (point^ p)
+	point^ operator= (point ^p)
 	{
 		this->x = p->x;
 		this->y = p->y;
@@ -57,7 +58,7 @@ public:
 		return this;
 	}
 
-	bool operator== (point^ p)
+	bool operator== (point ^p)
 	{
 		bool condition = (this->x == p->x) && (this->y == p->y) && (this->color == p->color);
 
@@ -73,25 +74,27 @@ public:
 public ref class line
 {
 public:
-	point^ p_s = gcnew point(0, 0);
-	point^ p_f = gcnew point(1, 1);
-	String^ color = "Black";
+	int N = 0; // Номер линии
+	point ^p_s = gcnew point(0, 0);
+	point ^p_f = gcnew point(1, 1);
+	String ^color = "Black";
 	double k = 1; // Коэффициент наклона отрезка по отношению к оси ОХ (y = kx + b)
 	double b = 0; // Смещение отрезка по отношению к оси ОХ (y = kx + b)
+	bool border = false;
 
 public:
 	line() // Конструктор
 	{
 	
 	}
-	line(point^ p_s, point^ p_f) // Конструктор
+	line(point ^p_s, point ^p_f) // Конструктор
 	{
 		this->p_s = p_s;
 		this->p_f = p_f;
 		b = (p_s->y * p_f->x - p_f->y * p_s->x) / (p_f->x - p_s->x);
 		k = (p_f->y - p_s->y) / (p_f->x - p_s->x);
 	}
-	line(point^ p_s, point^ p_f, String^ color) // Конструктор
+	line(point ^p_s, point ^p_f, String^ color) // Конструктор
 	{
 		this->p_s = p_s;
 		this->p_f = p_f;
@@ -100,7 +103,7 @@ public:
 		this->color = color;
 	}
 
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, float width)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale, float width)
 	{
 		Pen^ pen = gcnew Pen(Color::FromName(color), width);
 
@@ -112,9 +115,9 @@ public:
 		g->DrawLine(pen, x_s_px, y_s_px, x_f_px, y_f_px);
 	}
 
-	point^ center()
+	point ^center()
 	{
-		point^ tmp = gcnew point();
+		point ^tmp = gcnew point();
 
 		tmp->x = (p_s->x + p_f->x) / 2;
 		tmp->y = (p_s->y + p_f->y) / 2;
@@ -122,9 +125,16 @@ public:
 		return tmp;
 	}
 
-	point^ intersection_point(line^ l)
+	double length()
 	{
-		point^ tmp = gcnew point();
+		double tmp = p_s->distance(p_f);
+
+		return tmp;
+	}
+
+	point ^intersection_point(line ^l)
+	{
+		point ^tmp = gcnew point();
 
 		double k1 = k, k2 = l->k;
 		double b1 = b, b2 = l->b;
@@ -135,11 +145,11 @@ public:
 		return tmp;
 	}
 
-	bool intersect(line^ l)
+	bool intersect(line ^l)
 	{
 		bool tmp;
 
-		point^ i_p = (gcnew line(p_s, p_f))->intersection_point(l);
+		point ^i_p = (gcnew line(p_s, p_f))->intersection_point(l);
 		double x1, x2, y1, y2;
 
 		if (p_s->x <= p_f->x)
@@ -171,7 +181,7 @@ public:
 		return tmp;
 	}
 
-	line^ operator= (line^ l)
+	line ^operator= (line ^l)
 	{
 		this->p_s = l->p_s;
 		this->p_f = l->p_f;
@@ -189,9 +199,10 @@ public:
 public ref class circle
 {
 public:
+	int N = 0; // Номер окружности
 	double x = 0, y = 0; // Координаты центра окружности
 	double R = 1; // Радиус окружности
-	String^ color = "Black";
+	String ^color = "Black";
 
 	circle() // Конструктор
 	{
@@ -203,7 +214,7 @@ public:
 		this->y = y;
 		this->R = R;
 	}
-	circle(double x, double y, double R, String^ color) // Конструктор
+	circle(double x, double y, double R, String ^color) // Конструктор
 	{
 		this->x = x;
 		this->y = y;
@@ -216,7 +227,7 @@ public:
 		this->y = p->y;
 		this->R = R;
 	}
-	circle(point^ p, double R, String^ color) // Конструктор
+	circle(point^ p, double R, String ^color) // Конструктор
 	{
 		this->x = p->x;
 		this->y = p->y;
@@ -224,9 +235,9 @@ public:
 		this->color = color;
 	}
 
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, float width)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale, float width)
 	{
-		Pen^ pen = gcnew Pen(Color::FromName(color), width);
+		Pen ^pen = gcnew Pen(Color::FromName(color), width);
 
 		int radius_x_px = static_cast<int>(R * resolutions_x / scale);
 		int radius_y_px = static_cast<int>(R * resolutions_y / scale);
@@ -236,9 +247,9 @@ public:
 		g->DrawEllipse(pen, x_px, y_px, 2 * radius_x_px, 2 * radius_y_px);
 	}
 
-	array <point^>^ intersection_point(line^ l)
+	array <point ^> ^intersection_point(line ^l)
 	{
-		array <point^>^ points = gcnew array <point^>(2);
+		array <point ^> ^points = gcnew array <point ^>(2);
 		double k = l->k, b = l->b;
 		double x0 = x, y0 = y;
 
@@ -272,9 +283,9 @@ public:
 	}
 */
 
-	circle^ operator= (circle^ c)
+	circle ^operator= (circle ^c)
 	{
-		circle^ tmp;
+		circle ^tmp;
 		tmp->x = c->x;
 		tmp->y = c->y;
 		tmp->R = c->R;
@@ -292,23 +303,23 @@ public:
 public ref class triangle
 {
 public:
-	point^ p_1 = gcnew point(1, 1);
-	point^ p_2 = gcnew point(2, 2);
-	point^ p_3 = gcnew point(3, 4);
-	String^ color = "Black";
+	int N = 0; // Номер треугольника
+	point ^p_1 = gcnew point(1, 1);
+	point ^p_2 = gcnew point(2, 2);
+	point ^p_3 = gcnew point(3, 4);
+	String ^color = "Black";
 
-public:
 	triangle() // Конструктор
 	{
 
 	}
-	triangle(point^ p_1, point^ p_2, point^ p_3) // Конструктор
+	triangle(point ^p_1, point ^p_2, point ^p_3) // Конструктор
 	{
 		this->p_1 = p_1;
 		this->p_2 = p_2;
 		this->p_3 = p_3;
 	}
-	triangle(point^ p_1, point^ p_2, point^ p_3, String^ color) // Конструктор
+	triangle(point ^p_1, point ^p_2, point ^p_3, String ^color) // Конструктор
 	{
 		this->p_1 = p_1;
 		this->p_2 = p_2;
@@ -316,7 +327,7 @@ public:
 		this->color = color;
 	}
 
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale)
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 
@@ -332,9 +343,9 @@ public:
 		g->FillPolygon(brush, points);
 	}
 
-	circle^ circumscribed_circle()
+	circle ^circumscribed_circle()
 	{
-		circle^ tmp = gcnew circle();
+		circle ^tmp = gcnew circle();
 
 		double x1 = p_1->x, x2 = p_2->x, x3 = p_3->x;
 		double y1 = p_1->y, y2 = p_2->y, y3 = p_3->y;
@@ -354,52 +365,117 @@ public:
 	}
 };
 
-
 public ref class polygon
 {
 public:
-	int N; // Номер полигона
-	int nv; // Число вершин и ребер
-	bool border = false;
-	String^ color = "Black";
+	int N = 0; // Номер полигона
+	List <point ^> ^points = gcnew List<point ^>; // Список вершин многоугольника (полигона)
+	String ^color = "Black";
 
 	polygon() // Конструктор
 	{
-
+		points->Add(gcnew point(300, 125));
+		points->Add(gcnew point(500, 300));
+		points->Add(gcnew point(400, 500));
+		points->Add(gcnew point(200, 500));
+		points->Add(gcnew point(100, 300));
 	}
-	polygon(double x_, double y_) // Конструктор
+	polygon(List<point ^> ^points) // Конструктор
 	{
-		//x = x_;
-		//y = y_;
+		this->points = points;	
 	}
-	polygon(double x_, double y_, String^ color_) // Конструктор
+	polygon(List <point ^> ^points, String ^color) // Конструктор
 	{
-		//x = x_;
-		//y = y_;
-		color = color_;
-	}
-
-	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int diameter)
-	{
-		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
-
-		int x_px = 1;// static_cast<int>(x * resolutions_x / scale) - diameter / 2;
-		int y_px = 1;// static_cast<int>(y * resolutions_y / scale) - diameter / 2;
-
-		g->FillEllipse(brush, x_px, y_px, diameter, diameter);
+		this->points = points;
+		this->color = color;
 	}
 
-	double distance(polygon^ p)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale)
 	{
-		double dist = 1;//sqrt(pow(x - p->x, 2) + pow(y - p->y, 2));
+		SolidBrush ^brush = gcnew SolidBrush(Color::FromName(color));
 
-		return dist;
+		List <Point> ^Points = gcnew List<Point>;
+
+		for (int i = 0; i < points->Count; i++)
+		{
+			int x_px = static_cast<int>(points[i]->x * resolutions_x / scale);
+			int y_px = static_cast<int>(points[i]->y * resolutions_y / scale);
+
+			Points->Add(Point(x_px, y_px));
+		}
+
+		g->FillPolygon(brush, Points->ToArray());
+	}
+
+	List <line ^> ^list_of_border_lines()
+	{
+		List <line ^> ^tmp = gcnew List<line ^>;
+
+		for (int i = 0; i < points->Count; i++)
+		{
+			if (i != (points->Count - 1))
+			{
+				tmp->Add(gcnew line(points[i], points[i + 1], color));
+			}
+			else
+			{
+				tmp->Add(gcnew line(points[i], points[0], color));
+			}
+		}
+
+		return tmp;
+	}
+
+	array <polygon ^> ^bisection(double min_length_line)
+	{
+		array <polygon ^> ^tmp = gcnew array<polygon ^>(2);
+		line^ l = gcnew line(points[0], points[points->Count / 2], color);
+		//int number_of_diagonal = number_of_vertex * (number_of_vertex - 3) / 2;
+
+		tmp[0] = gcnew polygon();
+		tmp[1] = gcnew polygon();
+
+		tmp[0]->points->Clear();
+		tmp[1]->points->Clear();
+
+		tmp[0]->points->Add(points[0]);
+
+		if (l->length() >= min_length_line)
+		{
+			point ^p = l->center();
+
+			tmp[1]->points->Add(p);
+		}
+		tmp[1]->points->Add(points[points->Count / 2]);
+
+		for (int i = 1; i < points->Count; i++)
+		{
+			if (i < (points->Count / 2))
+			{
+				tmp[0]->points->Add(points[i]);
+			}
+			else
+			{
+				tmp[1]->points->Add(points[i]);
+			}
+		}
+
+		tmp[0]->points->Add(points[points->Count / 2]);
+		tmp[1]->points->Add(points[0]);
+		
+		if (l->length() >= min_length_line)
+		{
+			point ^p = l->center();
+
+			tmp[0]->points->Add(p);
+		}
+
+		return tmp;
 	}
 
 	polygon^ operator= (polygon^ p)
-	{
-		//this->x = p->x;
-		//this->y = p->y;
+	{	
+		this->points = p->points;
 		this->color = p->color;
 
 		return this;
@@ -407,7 +483,7 @@ public:
 
 	bool operator== (polygon^ p)
 	{
-		bool condition = 1;
+		bool condition = (points == p->points);
 
 		return condition;
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <string>
 #include "Objects.h"
 #include "Functions.h"
 
@@ -13,6 +14,7 @@ namespace FEM
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Сводка для WF
@@ -151,6 +153,36 @@ namespace FEM
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
+		polygon ^pol = gcnew polygon(); 
+
+		polygon ^pol_1 = pol->bisection(5)[0];
+		polygon ^pol_2 = pol->bisection(5)[1];
+		
+		List <line ^> ^lines_1 = pol_1->list_of_border_lines();
+		List <line ^> ^lines_2 = pol_2->list_of_border_lines();
+		
+		for each (line ^i in lines_1)
+		{
+			i->color = "Blue";
+			i->p_s->color = "Green";
+			i->p_f->color = "Green";
+			i->p_s->show(g, x_res, y_res, scale, 8);
+			i->p_f->show(g, x_res, y_res, scale, 8);
+			i->show(g, x_res, y_res, scale, 2);
+		}
+
+		for each (line ^i in lines_2)
+		{
+			i->color = "Red";
+			i->p_s->color = "Green";
+			i->p_f->color = "Green";
+			i->p_s->show(g, x_res, y_res, scale, 8);
+			i->p_f->show(g, x_res, y_res, scale, 8);
+			i->show(g, x_res, y_res, scale, 2);
+		}
+
+
+/*
 		point^ p1 = gcnew point(5, 5, "red");
 		point^ p2 = gcnew point(400, 400, "red");
 		point^ p3 = gcnew point(5, 100, "red");
@@ -166,12 +198,7 @@ namespace FEM
 			l2->show(g, x_res, y_res, scale, 5);
 			p5->show(g, x_res, y_res, scale, 8);
 		}
-
-		polygon^ pol = gcnew polygon();
-
-		pol->N = 5;
-
-
+*/
 		/*
 		point^ p1 = gcnew point(50, 150, "red");
 		point^ p2 = gcnew point(100, 200, "red");
