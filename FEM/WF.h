@@ -6,7 +6,6 @@
 
 namespace FEM
 {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -47,6 +46,7 @@ namespace FEM
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
+
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -92,14 +92,14 @@ namespace FEM
 			// 
 			this->textBox1->Location = System::Drawing::Point(704, 43);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(37, 20);
+			this->textBox1->Size = System::Drawing::Size(219, 20);
 			this->textBox1->TabIndex = 3;
 			this->textBox1->Text = L"0.01";
 			this->textBox1->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(779, 43);
+			this->textBox2->Location = System::Drawing::Point(929, 43);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(53, 20);
 			this->textBox2->TabIndex = 5;
@@ -109,7 +109,7 @@ namespace FEM
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(781, 27);
+			this->label2->Location = System::Drawing::Point(931, 27);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(15, 13);
 			this->label2->TabIndex = 4;
@@ -152,47 +152,56 @@ namespace FEM
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		double df=2*Pi/30, x, y, x0=300, y0=300, R=250;
+		int N = 5;
+/*
+		point ^p1 = gcnew point(100, 100);
+		point ^p2 = gcnew point(200, 200);
+		point ^p3 = gcnew point(300, 300);
+		point ^p4 = gcnew point(400, 400);
+		point ^p5 = gcnew point(400, 100);
+*/
 		polygon ^pol = gcnew polygon(); 
 		pol->points->Clear();
-		for (int i = 0; i < 30; i++) 
+/*
+		pol->points->Add(p1);
+		pol->points->Add(p2);
+		pol->points->Add(p3);
+		pol->points->Add(p4);
+		pol->points->Add(p5);
+*/		
+	
+		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250;
+
+		for (int i = 0; i < N; i++) 
 		{
-			x = R * cos(i*df) + x0;
-			y = R * sin(i*df) + y0;
+			x = R * cos(i * df) + x0;
+			y = R * sin(i * df) + y0;
 			pol->points->Add(gcnew point(x, y, "red"));
 		}
-		List<line ^> ^ourlist = pol->list_of_border_lines();
-		//pol->show(g,x_res, y_res, scale);
-		for each (line ^L in ourlist)
+	
+		List <polygon ^> ^polygons = gcnew List <polygon ^>;
+		
+		polygons->Add(pol);
+
+		List <polygon ^> ^pols = triangulation(polygons, 150);
+
+		textBox1->Text = Convert::ToString(pols->Count);
+
+		for each (polygon ^p in pols)
 		{
-			L->show(g, x_res, y_res, scale, 2);
-		}
-		
-		polygon ^pol_1 = pol->bisection(5)[0];
-		polygon ^pol_2 = pol->bisection(5)[1];
-		
-		List <line ^> ^lines_1 = pol_1->list_of_border_lines();
-		List <line ^> ^lines_2 = pol_2->list_of_border_lines();
-		
-		for each (line ^i in lines_1)
-		{
-			i->color = "Blue";
-			i->p_s->color = "Green";
-			i->p_f->color = "Green";
-			i->p_s->show(g, x_res, y_res, scale, 8);
-			i->p_f->show(g, x_res, y_res, scale, 8);
-			i->show(g, x_res, y_res, scale, 2);
+			List <line ^> ^lines = p->list_of_border_lines();
+
+			for each (line ^l in lines)
+			{
+				l->color = "Blue";
+				l->p_s->color = "Green";
+				l->p_f->color = "Green";
+				l->p_s->show(g, x_res, y_res, scale, 8);
+				l->p_f->show(g, x_res, y_res, scale, 8);
+				l->show(g, x_res, y_res, scale, 2);
+			}
 		}
 
-		for each (line ^i in lines_2)
-		{
-			i->color = "Red";
-			i->p_s->color = "Green";
-			i->p_f->color = "Green";
-			i->p_s->show(g, x_res, y_res, scale, 8);
-			i->p_f->show(g, x_res, y_res, scale, 8);
-			i->show(g, x_res, y_res, scale, 2);
-		}
          /**/
 
 /*
