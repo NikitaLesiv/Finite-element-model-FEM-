@@ -40,7 +40,7 @@ List <polygon ^> ^triangulation(List <polygon ^> ^polygons, double min_length_li
 
 				if (pol->points->Count > 3)
 				{
-				//	k++;
+				//	k++;///
 				}
 			}
 		}
