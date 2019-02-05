@@ -152,24 +152,13 @@ namespace FEM
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 5;
-/*
-		point ^p1 = gcnew point(100, 100);
-		point ^p2 = gcnew point(200, 200);
-		point ^p3 = gcnew point(300, 300);
-		point ^p4 = gcnew point(400, 400);
-		point ^p5 = gcnew point(400, 100);
-*/
+		int N = 15;
+
 		polygon ^pol = gcnew polygon(); 
 		pol->points->Clear();
-/*
-		pol->points->Add(p1);
-		pol->points->Add(p2);
-		pol->points->Add(p3);
-		pol->points->Add(p4);
-		pol->points->Add(p5);
-*/		
-	
+
+		
+
 		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250;
 
 		for (int i = 0; i < N; i++) 
@@ -178,12 +167,33 @@ namespace FEM
 			y = R * sin(i * df) + y0;
 			pol->points->Add(gcnew point(x, y, "red"));
 		}
-	
+	/*	
+		pol->points->Add(gcnew point(50, 50, "red"));
+		pol->points->Add(gcnew point(50, 100, "red"));
+		pol->points->Add(gcnew point(50, 200, "red"));
+		pol->points->Add(gcnew point(100, 150, "red"));
+		pol->points->Add(gcnew point(100, 100, "red"));
+		pol->points->Add(gcnew point(80, 80, "red"));
+		
+*/
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
 		
 		polygons->Add(pol);
 
 		List <polygon ^> ^pols = triangulation(polygons, 150);
+/*
+		polygon ^p1 = ((polygons[0]->bisection(10))[0]->bisection(10))[0];
+		polygon ^p2 = ((polygons[0]->bisection(10))[0]->bisection(10))[1];
+		polygon ^p3 = ((polygons[0]->bisection(10))[1]->bisection(10))[0];
+		polygon ^p4 = ((polygons[0]->bisection(10))[1]->bisection(10))[1];
+
+		List <polygon ^> ^pols = gcnew List <polygon ^>;
+
+		pols->Add(p1);
+		pols->Add(p2);
+		pols->Add(p3);
+		pols->Add(p4);
+*/
 
 		textBox1->Text = Convert::ToString(pols->Count);
 
