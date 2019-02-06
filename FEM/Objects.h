@@ -12,6 +12,8 @@ public ref class point
 {
 public:
 	int N = 0; // Номер точки
+	int row; // Номер строки
+	int col; // Номер столбца
 	double x = 0, y = 0;
 	bool border = false;
 	String ^color = "Black";
@@ -426,19 +428,19 @@ public:
 		return tmp;
 	}
 
-	List <point ^> ^cyclic_permutation_of_indices(List <point ^> ^list)
+	void cyclic_permutation_of_indices() // List <point ^> ^list
 	{
-		int N = list->Count;
+		int N = points->Count;
 		List <point ^> ^tmp = gcnew List <point ^>;
 
-		tmp->Add(list[N - 1]);
+		tmp->Add(points[N - 1]);
 
 		for (int i = 0; i < (N - 1); i++)
 		{
-			tmp->Add(list[i]);
+			tmp->Add(points[i]);
 		}
 
-		return tmp;
+		points = tmp;
 	}
 
 	List <polygon ^> ^bisection(double min_length_line)
@@ -458,7 +460,7 @@ public:
 			{
 				do
 				{
-					points = cyclic_permutation_of_indices(points);
+					cyclic_permutation_of_indices();
 
 					l1 = gcnew line(points[0], points[1], color);
 					l2 = gcnew line(points[0], points[2], color);
@@ -498,7 +500,7 @@ public:
 			{
 				do
 				{
-					points = cyclic_permutation_of_indices(points);
+					cyclic_permutation_of_indices();
 
 					l1 = gcnew line(points[0], points[1], color);
 					l2 = gcnew line(points[0], points[points->Count / 2], color);

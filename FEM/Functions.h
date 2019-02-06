@@ -28,7 +28,7 @@ List <polygon ^> ^triangulation(List <polygon ^> ^polygons, double min_length_li
 //	do
 //	{
 //		k = 0;
-	for (int k = 0; k < 6; k++)
+	for (int k = 0; k < 10; k++)
 	{	
 		for (int i = 0; i < tmp->Count; i++) // polygon ^p in tmp
 		{

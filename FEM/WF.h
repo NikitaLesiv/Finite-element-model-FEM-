@@ -147,19 +147,24 @@ namespace FEM
 
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
+
+
+
+
 		Graphics ^g = pictureBox1->CreateGraphics();
 		g->Clear(Color::White);	
 		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 15;
+		int N = 30;
 
 		polygon ^pol = gcnew polygon(); 
 		pol->points->Clear();
 
 		
 
-		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250;
+		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250,r,x1,y1;
+		int N1, N2, N3, N4, Ncount,row;
 
 		for (int i = 0; i < N; i++) 
 		{
@@ -177,23 +182,87 @@ namespace FEM
 		
 */
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
+		array <point ^,2> ^points1 = gcnew array <point ^,2>(50,50);
+		array <line ^,2> ^line1 = gcnew array <line ^,2>(50,50);
+		array <line ^, 2> ^line2 = gcnew array <line ^, 2>(50, 50);
+		array <line ^, 2> ^line3 = gcnew array <line ^, 2>(50, 50);
+
+		Ncount = 50;
+		for (int i=0; i< Ncount; i++)
+		{
+			for (int j = 0; j < Ncount; j++)
+			{
+				x = 5 + i * 12;
+				y = 5 + j * 12;
+				x1 = x - x0;
+				y1 = y - y0;
+				r = sqrt(x1 * x1 + y1 * y1);
+				
+				points1[i,j] = gcnew point(x, y);
+				points1[i, j]->N = -1;
+				if (r < R) 
+				{
+				points1[i, j]->show(g, 600, 600, 600, 5);
+				points1[i, j]->N = 1;
+				}
+				
+			}
+
+		}
+		for (int i = 0; i < Ncount-1; i++)
+		{
+			for (int j = 0; j < Ncount-1; j++)
+			{
+				int n = i*row + j;
+
+				N1 = points1[i, j]->N;
+				N2 = points1[i+1, j]->N;
+				N3 = points1[i, j+1]->N;
+				N4 = points1[i+1, j+1]->N;
+				
+				if (N1>0 && N2>0)
+				{
+				line1[i, j] = gcnew line(points1[i,j], points1[i+1,j]);
+				line1[i, j]->show(g, 600, 600, 600, 2);
+				}
+				if (N1 > 0 && N3 > 0)
+				{
+					line2[i, j] = gcnew line(points1[i, j], points1[i, j+1]);
+					line2[i, j]->show(g, 600, 600, 600, 2);
+				}
+				if (N1 > 0 && N4 > 0)
+				{
+					line3[i, j] = gcnew line(points1[i, j], points1[i + 1, j+1]);
+					line3[i, j]->show(g, 600, 600, 600, 2);
+				}
+				//
+				//if (N1>0 && N3>0)	
+				//{ 
+				 //   line1->Add(gcnew line(points1[n], points1[n + Ncount]));
+				//}
+				//if (N1 > 0 && N4 > 0) 
+				//{
+				//line1->Add(gcnew line(points1[n], points1[n + Ncount+1]));
+				//}
+
+			}
+
+		}
+
+
 		
 		polygons->Add(pol);
 
-		List <polygon ^> ^pols = triangulation(polygons, 150);
+		List <polygon ^> ^pols = polygons;//triangulation(polygons, 150);
 /*
 		polygon ^p1 = ((polygons[0]->bisection(10))[0]->bisection(10))[0];
 		polygon ^p2 = ((polygons[0]->bisection(10))[0]->bisection(10))[1];
 		polygon ^p3 = ((polygons[0]->bisection(10))[1]->bisection(10))[0];
 		polygon ^p4 = ((polygons[0]->bisection(10))[1]->bisection(10))[1];
-
-		List <polygon ^> ^pols = gcnew List <polygon ^>;
-
-		pols->Add(p1);
-		pols->Add(p2);
-		pols->Add(p3);
-		pols->Add(p4);
 */
+		
+
+	
 
 		textBox1->Text = Convert::ToString(pols->Count);
 
@@ -212,7 +281,7 @@ namespace FEM
 			}
 		}
 
-         /**/
+         
 
 /*
 		point^ p1 = gcnew point(5, 5, "red");
