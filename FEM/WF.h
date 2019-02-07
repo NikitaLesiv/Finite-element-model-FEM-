@@ -1,6 +1,5 @@
 #pragma once
 #include <cmath>
-#include <string>
 #include "Objects.h"
 #include "Functions.h"
 
@@ -148,16 +147,11 @@ namespace FEM
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		Graphics ^g = pictureBox1->CreateGraphics();
-		g->Clear(Color::White);	
-		
+		g->Clear(Color::White);		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 15;
-
+		int N = 5;
 		polygon ^pol = gcnew polygon(); 
-		pol->points->Clear();
-
-		
 
 		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250;
 
@@ -167,37 +161,46 @@ namespace FEM
 			y = R * sin(i * df) + y0;
 			pol->points->Add(gcnew point(x, y, "red"));
 		}
-	/*	
-		pol->points->Add(gcnew point(50, 50, "red"));
-		pol->points->Add(gcnew point(50, 100, "red"));
-		pol->points->Add(gcnew point(50, 200, "red"));
-		pol->points->Add(gcnew point(100, 150, "red"));
-		pol->points->Add(gcnew point(100, 100, "red"));
-		pol->points->Add(gcnew point(80, 80, "red"));
-		
+/*
+		pol->points->Add(gcnew point(50, 50));
+		pol->points->Add(gcnew point(50, 100));
+		pol->points->Add(gcnew point(50, 200));
+		pol->points->Add(gcnew point(100, 150));
+		pol->points->Add(gcnew point(100, 100));
+		pol->points->Add(gcnew point(80, 80));
 */
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
-		
+
 		polygons->Add(pol);
 
-		List <polygon ^> ^pols = triangulation(polygons, 150);
-/*
-		polygon ^p1 = ((polygons[0]->bisection(10))[0]->bisection(10))[0];
-		polygon ^p2 = ((polygons[0]->bisection(10))[0]->bisection(10))[1];
-		polygon ^p3 = ((polygons[0]->bisection(10))[1]->bisection(10))[0];
-		polygon ^p4 = ((polygons[0]->bisection(10))[1]->bisection(10))[1];
-
+		List <polygon ^> ^pols_1 = triangulation(polygons, 500);
+					
 		List <polygon ^> ^pols = gcnew List <polygon ^>;
+	
+		//	pols[0]->show(g, x_res, y_res, scale);
+	//	pols[1]->show(g, x_res, y_res, scale);
+	//	pols[2]->show(g, x_res, y_res, scale);
+	//	pols[3]->show(g, x_res, y_res, scale);
 
-		pols->Add(p1);
-		pols->Add(p2);
-		pols->Add(p3);
-		pols->Add(p4);
+/*
+		polygon ^p1 = pols_1[0]; // ((polygons[0]->bisection(50))[0]->bisection(50))[0];
+		polygon ^p2 = pols_1[1]; // ((polygons[0]->bisection(50))[0]->bisection(50))[1];
+		polygon ^p3 = pols_1[2]; // ((polygons[0]->bisection(50))[1]->bisection(50))[0];
+		polygon ^p4 = pols_1[3]; // ((polygons[0]->bisection(50))[1]->bisection(50))[1];
+		polygon ^p5 = pols_1[4];
 */
+
+		for each (polygon ^p in pols_1)
+		{
+			if (true || pols_1->IndexOf(p) == 0)
+			{
+				pols->Add(p);
+			}	
+		}
 
 		textBox1->Text = Convert::ToString(pols->Count);
 
-		for each (polygon ^p in pols)
+		for each (polygon ^p in pols) // Отображение списка многоугольников (отображает список pols)
 		{
 			List <line ^> ^lines = p->list_of_border_lines();
 
@@ -211,128 +214,6 @@ namespace FEM
 				l->show(g, x_res, y_res, scale, 2);
 			}
 		}
-
-         /**/
-
-/*
-		point^ p1 = gcnew point(5, 5, "red");
-		point^ p2 = gcnew point(400, 400, "red");
-		point^ p3 = gcnew point(5, 100, "red");
-		point^ p4 = gcnew point(5, 400, "red");
-
-		line^ l1 = gcnew line(p1, p2, "blue");
-		line^ l2 = gcnew line(p3, p4, "red");
-
-		if (l1->intersect(l2)) 
-		{
-			point^ p5 = l1->intersection_point(l2);
-			l1->show(g, x_res, y_res, scale, 5);
-			l2->show(g, x_res, y_res, scale, 5);
-			p5->show(g, x_res, y_res, scale, 8);
-		}
-*/
-		/*
-		point^ p1 = gcnew point(50, 150, "red");
-		point^ p2 = gcnew point(100, 200, "red");
-		point^ p3 = gcnew point(300, 200, "red");
-		triangle^ t = gcnew triangle(p1, p2, p3, "blue");
-		t->show(g,x_res, y_res, scale);
-		p1->show(g, x_res, y_res, scale, 8);
-		p2->show(g, x_res, y_res, scale, 8);
-		p3->show(g, x_res, y_res, scale, 8);
-		circle^ c1 = t->circumscribed_circle();
-		c1->show(g, x_res, y_res, scale, 8);
-		*/
-		/*
-		double x, y, r; // , alpha;
-
-		int N = 100; // Число точек на границе
-		double R = 300; // Радиус окружности
-		
-		array <point ^> ^points = gcnew array<point ^>(N + 2);
-		array <line  ^> ^lines  = gcnew array<line  ^>(N + 2);
-		
-		double dr = R / 10;
-
-		for (double r = 0; r <= R; r += dr)
-		{
-			int n = N * r / R + 1;
-			double d_phi = 2 * Pi / n;
-
-			for (int i = 0; i <= n; i++)
-			{
-				x = r * cos(i * d_phi) + R;
-				y = r * sin(i * d_phi) + R;
-
-				if (r == R)
-				{
-					points[i] = gcnew point(x, y, "blue");
-					points[i]->border = true;
-				}
-				else
-				{
-					points[i] = gcnew point(x, y, "red");
-				}
-
-				if (i != 0)
-				{
-					lines[i] = gcnew line(points[i - 1], points[i], "green");
-					lines[i]->show(g, x_res, y_res, scale, 2);
-				}
-
-				points[i]->show(g, x_res, y_res, scale, 8);	
-			}
-		}
-	*/	
-	/*
-		Pen^ myPen = gcnew Pen(Color::Red, 2);
-		g->DrawEllipse(myPen, 0, 0, 560, 560);
-		array <line^ , 2>^ lines  = gcnew array<line^ , 2>(200, 200);
-		//array <point ^, 2> ^points = gcnew array<point ^, 2>(N, N);
-		double Rc = 280, d = 1, d1;
-
-		for (int i = 0; i < 60; i++)
-		{
-			for (int j = 0; j < 60; j++)
-			{
-
-				x = 280 - i * 10;
-				y = 280 - j * 10;
-				r = sqrt(x * x + y * y);
-				if (y > 0)
-				{
-					alpha = acos(x / r);
-				}
-				else
-				{
-					alpha = 2 * Pi - acos(x / r);
-				}
-
-				d1 = d * (1 + pow(cos(2*(alpha - Pi / 4)),2));
-
-				if (abs(r - Rc) < d1)
-				{
-
-					x = Rc * cos(alpha);
-					y = Rc * sin(alpha);
-					
-					points[i, j] = gcnew point(x + Rc, y + Rc);
-					points[i, j]->color = "blue";
-					points[i, j]->border = true;
-					points[i, j]->show(g, 600, 600, 600, 8);
-				}
-
-				if (r < Rc-d1)
-				{
-					points[i, j] = gcnew point(x +Rc, y+Rc);
-					points[i, j]->color = "red";
-					points[i, j]->border = false;
-					points[i, j]->show(g,600,600,600,3);
-				}
-
-			}
-		}
-	*/
 	}
 };
 }

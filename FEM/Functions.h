@@ -18,38 +18,57 @@ List <T> ^array_to_list(array <T> ^arr)
 	return list;
 }
 
-List <polygon ^> ^triangulation(List <polygon ^> ^polygons, double min_length_line)
+void remove_all(List <polygon ^> ^lists)
 {
-	List <polygon ^> ^tmp = polygons;
+	for (int i = lists->Count - 1; i >= 0; i--)
+	{
+		lists->Remove(lists[i]);
+		//p->~polygon();
+	}
+}
+
+List <polygon ^> ^bisection(List <polygon ^> ^pols, double min_length_line)
+{
+	List <polygon ^> ^tmp = gcnew List <polygon ^>;
+
+	for each (polygon ^p in pols)
+	{
+		List <polygon ^> ^polygons = p->bisection(min_length_line);
+
+		tmp->AddRange(polygons);
+	}
+
+	return tmp;
+}
+
+List <polygon ^> ^triangulation(List <polygon ^> ^pol, double min_length_line)
+{
+	List <polygon ^> ^tmp   = gcnew List <polygon ^>;
 	List <polygon ^> ^tmp_2 = gcnew List <polygon ^>;
 	List <polygon ^> ^tmp_3 = gcnew List <polygon ^>;
 
-//	int k;
-//	do
-//	{
-//		k = 0;
-	for (int k = 0; k < 6; k++)
-	{	
-		for (int i = 0; i < tmp->Count; i++) // polygon ^p in tmp
-		{
-			tmp_2->Clear();
-			tmp_2 = tmp[i]->bisection(min_length_line); // AddRange(tmp_1[i]->bisection(min_length_line));
-			for each (polygon ^pol in tmp_2) // polygon ^pol in tmp_2
-			{
-				tmp_3->Add(pol);
+	tmp_2->AddRange(pol);
+	int k;
 
-				if (pol->points->Count > 3)
-				{
-				//	k++;///
-				}
+	do
+	{
+		k = 0;
+
+		tmp_3->AddRange(bisection(tmp_2, min_length_line));
+		tmp_2->Clear();
+		tmp_2->AddRange(tmp_3);
+		tmp_3->Clear();
+
+		for each (polygon ^p in tmp_2)
+		{
+			if (p->points->Count > 3)
+			{
+				k++;
 			}
 		}
+	} while (k != 0);
 
-		tmp->Clear();
-		tmp->AddRange(tmp_3);
-		tmp_3->Clear();
-	}
-//	} while (k < 500);
+	tmp->AddRange(tmp_2);
 
 	return tmp;
 }

@@ -8,6 +8,8 @@ using namespace System::Data;
 using namespace System::Drawing;
 using namespace System::Collections::Generic;
 
+///////////////////////////////////////////////////////////////////////////////////
+
 public ref class point
 {
 public:
@@ -82,7 +84,6 @@ public:
 	double b = 0; // Смещение отрезка по отношению к оси ОХ (y = kx + b)
 	bool border = false;
 
-public:
 	line() // Конструктор
 	{
 	
@@ -365,6 +366,26 @@ public:
 	}
 };
 
+/////////////////////////////////////////////////////////////////////////
+
+List <point ^> ^Cyclic_permutation_of_indices(List <point ^> ^list)
+{
+	int N = list->Count;
+	List <point ^> ^tmp = gcnew List <point ^>;
+
+	tmp->Add(list[N - 1]);
+
+	for (int i = 0; i < (N - 1); i++)
+	{
+		tmp->Add(list[i]);
+	}
+
+	return tmp;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 public ref class polygon
 {
 public:
@@ -374,11 +395,6 @@ public:
 
 	polygon() // Конструктор
 	{
-		points->Add(gcnew point(300, 125));
-		points->Add(gcnew point(500, 300));
-		points->Add(gcnew point(400, 500));
-		points->Add(gcnew point(200, 500));
-		points->Add(gcnew point(100, 300));
 	}
 	polygon(List<point ^> ^points) // Конструктор
 	{
@@ -426,19 +442,19 @@ public:
 		return tmp;
 	}
 
-	List <point ^> ^cyclic_permutation_of_indices(List <point ^> ^list)
+	void cyclic_permutation_of_indices()
 	{
-		int N = list->Count;
+		int N = points->Count;
 		List <point ^> ^tmp = gcnew List <point ^>;
 
-		tmp->Add(list[N - 1]);
+		tmp->Add(points[N - 1]);
 
 		for (int i = 0; i < (N - 1); i++)
 		{
-			tmp->Add(list[i]);
+			tmp->Add(points[i]);
 		}
 
-		return tmp;
+		points = tmp;
 	}
 
 	List <polygon ^> ^bisection(double min_length_line)
@@ -447,41 +463,45 @@ public:
 
 		if (points->Count == 3)
 		{
-			tmp->Add(gcnew polygon(points, color));
+			tmp->Add(gcnew polygon(points));
 		}
 		else if (points->Count == 4)
 		{
-			line^ l1 = gcnew line(points[0], points[1], color);
-			line^ l2 = gcnew line(points[0], points[2], color);
+			line^ l1 = gcnew line(points[0], points[1]);
+			line^ l2 = gcnew line(points[0], points[2]);
+			line^ l = gcnew line();
+
+			tmp->Add(gcnew polygon());
+			tmp->Add(gcnew polygon());
 
 			if (abs(l1->k) == abs(l2->k))
 			{
-				do
-				{
-					points = cyclic_permutation_of_indices(points);
+				l->p_s = points[1];
+				l->p_f = points[3];
 
-					l1 = gcnew line(points[0], points[1], color);
-					l2 = gcnew line(points[0], points[2], color);
-				} while (abs(l1->k) == abs(l2->k));
+				tmp[0]->points->Add(points[1]);
+				tmp[0]->points->Add(points[0]);
+				tmp[0]->points->Add(points[3]);
+
+				tmp[1]->points->Add(points[3]);
+				tmp[1]->points->Add(points[2]);
+				tmp[1]->points->Add(points[1]);
 			}
-			
-			line^ l = gcnew line(points[0], points[2], color);
+			else
+			{
+				l->p_s = points[0];
+				l->p_f = points[2];
 
-			tmp->Add(gcnew polygon());
-			tmp->Add(gcnew polygon());
+				tmp[0]->points->Add(points[0]);
+				tmp[0]->points->Add(points[1]);
+				tmp[0]->points->Add(points[2]);
 
-			tmp[0]->points->Clear();
-			tmp[1]->points->Clear();
-
-			tmp[0]->points->Add(points[0]);
-			tmp[0]->points->Add(points[1]);
-			tmp[0]->points->Add(points[2]);
-
-			tmp[1]->points->Add(points[0]);
-			tmp[1]->points->Add(points[3]);
-			tmp[1]->points->Add(points[2]);
-
-			if (l->length() >= min_length_line)
+				tmp[1]->points->Add(points[0]);
+				tmp[1]->points->Add(points[3]);
+				tmp[1]->points->Add(points[2]);
+			}
+		
+			if (l->length() > min_length_line)
 			{
 				point ^p = l->center();
 
@@ -491,56 +511,45 @@ public:
 		}
 		else
 		{
-			line^ l1 = gcnew line(points[0], points[1], color);
-			line^ l2 = gcnew line(points[0], points[points->Count / 2], color);
+			line^ l1 = gcnew line(points[0], points[1]);
+			line^ l2 = gcnew line(points[0], points[points->Count / 2]);
 
 			if (abs(l1->k) == abs(l2->k))
 			{
 				do
 				{
-					points = cyclic_permutation_of_indices(points);
+					points = Cyclic_permutation_of_indices(points);
 
-					l1 = gcnew line(points[0], points[1], color);
-					l2 = gcnew line(points[0], points[points->Count / 2], color);
+					l1->p_s = points[0];
+					l1->p_f = points[1];
+
+					l2->p_s = points[0];
+					l2->p_f = points[points->Count / 2];
+
 				} while (abs(l1->k) == abs(l2->k));
 			}
 
 			tmp->Add(gcnew polygon());
 			tmp->Add(gcnew polygon());
 
-			tmp[0]->points->Clear();
-			tmp[1]->points->Clear();
-
-			tmp[0]->points->Add(points[0]);
-
-			if (l2->length() >= min_length_line)
+			for (int i = 0; i <= points->Count / 2; i++)
 			{
-				point ^p = l2->center();
-
-				tmp[1]->points->Add(p);
-			}
-			tmp[1]->points->Add(points[points->Count / 2]);
-
-			for (int i = 1; i < points->Count; i++)
-			{
-				if (i < (points->Count / 2))
-				{
-					tmp[0]->points->Add(points[i]);
-				}
-				else
-				{
-					tmp[1]->points->Add(points[i]);
-				}
+				tmp[0]->points->Add(points[i]);
 			}
 
-			tmp[0]->points->Add(points[points->Count / 2]);
+			for (int i = points->Count / 2; i < points->Count; i++)
+			{
+				tmp[1]->points->Add(points[i]);
+			}
+
 			tmp[1]->points->Add(points[0]);
-
-			if (l2->length() >= min_length_line)
+			
+			if (l2->length() > min_length_line)
 			{
 				point ^p = l2->center();
 
 				tmp[0]->points->Add(p);
+				tmp[1]->points->Add(p);
 			}
 		}
 
@@ -584,4 +593,3 @@ public:
 
 	}
 };
-
