@@ -114,6 +114,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -123,6 +124,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

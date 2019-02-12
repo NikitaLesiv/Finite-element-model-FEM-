@@ -150,49 +150,42 @@ namespace FEM
 		g->Clear(Color::White);		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 5;
+		int N = 15;
 		polygon ^pol = gcnew polygon(); 
+/**/
+		double df = 2 * Pi / N;
+		int x, y, x0 = 300, y0 = 300, R = 250;
 
-		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 250;
+		List <point ^> ^points = gcnew List <point ^>;
 
 		for (int i = 0; i < N; i++) 
 		{
 			x = R * cos(i * df) + x0;
 			y = R * sin(i * df) + y0;
-			pol->points->Add(gcnew point(x, y, "red"));
+			points->Add(gcnew point(x, y));
 		}
+
+		pol->points->AddRange(points);
+
 /*
-		pol->points->Add(gcnew point(50, 50));
-		pol->points->Add(gcnew point(50, 100));
-		pol->points->Add(gcnew point(50, 200));
-		pol->points->Add(gcnew point(100, 150));
-		pol->points->Add(gcnew point(100, 100));
-		pol->points->Add(gcnew point(80, 80));
+		pol->points->Add(gcnew point(550, 300));
+		pol->points->Add(gcnew point(300, 550));
+		pol->points->Add(gcnew point(50, 300));
+		pol->points->Add(gcnew point(300, 50));				
+		pol->points->Add(gcnew point(400, 50));
+		pol->points->Add(gcnew point(550, 300));
 */
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
 
 		polygons->Add(pol);
 
-		List <polygon ^> ^pols_1 = triangulation(polygons, 500);
+		List <polygon^>^ pols_1 = triangulation(polygons, 210);
 					
 		List <polygon ^> ^pols = gcnew List <polygon ^>;
-	
-		//	pols[0]->show(g, x_res, y_res, scale);
-	//	pols[1]->show(g, x_res, y_res, scale);
-	//	pols[2]->show(g, x_res, y_res, scale);
-	//	pols[3]->show(g, x_res, y_res, scale);
-
-/*
-		polygon ^p1 = pols_1[0]; // ((polygons[0]->bisection(50))[0]->bisection(50))[0];
-		polygon ^p2 = pols_1[1]; // ((polygons[0]->bisection(50))[0]->bisection(50))[1];
-		polygon ^p3 = pols_1[2]; // ((polygons[0]->bisection(50))[1]->bisection(50))[0];
-		polygon ^p4 = pols_1[3]; // ((polygons[0]->bisection(50))[1]->bisection(50))[1];
-		polygon ^p5 = pols_1[4];
-*/
 
 		for each (polygon ^p in pols_1)
 		{
-			if (true || pols_1->IndexOf(p) == 0)
+			if (true || pols_1->IndexOf(p) == 1)
 			{
 				pols->Add(p);
 			}	

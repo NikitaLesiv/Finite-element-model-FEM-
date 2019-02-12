@@ -133,6 +133,12 @@ public:
 		return tmp;
 	}
 
+	void refresh_k_and_b()
+	{
+		b = (p_s->y * p_f->x - p_f->y * p_s->x) / (p_f->x - p_s->x);
+		k = (p_f->y - p_s->y) / (p_f->x - p_s->x);
+	}
+
 	point ^intersection_point(line ^l)
 	{
 		point ^tmp = gcnew point();
@@ -284,15 +290,12 @@ public:
 	}
 */
 
-	circle ^operator= (circle ^c)
+	void operator= (circle ^c)
 	{
-		circle ^tmp;
-		tmp->x = c->x;
-		tmp->y = c->y;
-		tmp->R = c->R;
-		color = c->color;
-
-		return tmp;
+		this->x = c->x;
+		this->y = c->y;
+		this->R = c->R;
+		this->color = c->color;
 	}
 
 	~circle() // Деструктор
@@ -465,43 +468,58 @@ public:
 		{
 			tmp->Add(gcnew polygon(points));
 		}
-		else if (points->Count == 4)
-		{
-			line^ l1 = gcnew line(points[0], points[1]);
-			line^ l2 = gcnew line(points[0], points[2]);
-			line^ l = gcnew line();
+		else if (points->Count == 40000000)
+		{	
+			line^ l1  = gcnew line(points[0], points[1]);
+			line^ l2  = gcnew line(points[1], points[2]);
+			line^ l3  = gcnew line(points[2], points[3]);
+			line^ l4 =  gcnew line(points[3], points[0]);
+			
+			line^ l_1 = gcnew line(points[0], points[2]);
+			line^ l_2 = gcnew line(points[1], points[3]);
+			line^ l   = gcnew line();
 
 			tmp->Add(gcnew polygon());
 			tmp->Add(gcnew polygon());
 
-			if (abs(l1->k) == abs(l2->k))
+			if ((l1->k == l2->k) || (l3->k == l4->k))
 			{
-				l->p_s = points[1];
-				l->p_f = points[3];
-
-				tmp[0]->points->Add(points[1]);
-				tmp[0]->points->Add(points[0]);
 				tmp[0]->points->Add(points[3]);
+				tmp[0]->points->Add(points[0]);
+				tmp[0]->points->Add(points[1]);
 
-				tmp[1]->points->Add(points[3]);
-				tmp[1]->points->Add(points[2]);
 				tmp[1]->points->Add(points[1]);
+				tmp[1]->points->Add(points[2]);
+				tmp[1]->points->Add(points[3]);
+
+				l = l_2;
+			}
+			else if ((l1->k == l4->k) || (l3->k == l2->k))
+			{
+				tmp[0]->points->Add(points[2]);
+				tmp[0]->points->Add(points[3]);
+				tmp[0]->points->Add(points[0]);
+
+				tmp[1]->points->Add(points[0]);
+				tmp[1]->points->Add(points[1]);
+				tmp[1]->points->Add(points[2]);
+
+				l = l_1;
 			}
 			else
 			{
-				l->p_s = points[0];
-				l->p_f = points[2];
-
-				tmp[0]->points->Add(points[0]);
-				tmp[0]->points->Add(points[1]);
 				tmp[0]->points->Add(points[2]);
+				tmp[0]->points->Add(points[3]);
+				tmp[0]->points->Add(points[0]);
 
 				tmp[1]->points->Add(points[0]);
-				tmp[1]->points->Add(points[3]);
+				tmp[1]->points->Add(points[1]);
 				tmp[1]->points->Add(points[2]);
+
+				l = l_1;
 			}
-		
-			if (l->length() > min_length_line)
+			
+			if (l->length() >= min_length_line)
 			{
 				point ^p = l->center();
 
@@ -509,24 +527,18 @@ public:
 				tmp[1]->points->Add(p);
 			}
 		}
-		else
+		else //if (false) // Исправить!!!
 		{
 			line^ l1 = gcnew line(points[0], points[1]);
 			line^ l2 = gcnew line(points[0], points[points->Count / 2]);
+			line^ l3 = gcnew line(points[0], points[points->Count - 1]);
 
-			if (abs(l1->k) == abs(l2->k))
+			while ((l2->k == l1->k) || (l2->k == l3->k))
 			{
-				do
-				{
-					points = Cyclic_permutation_of_indices(points);
+				points = Cyclic_permutation_of_indices(points);
 
-					l1->p_s = points[0];
-					l1->p_f = points[1];
-
-					l2->p_s = points[0];
-					l2->p_f = points[points->Count / 2];
-
-				} while (abs(l1->k) == abs(l2->k));
+				l1 = gcnew line(points[0], points[1]);
+				l2 = gcnew line(points[0], points[points->Count / 2]);
 			}
 
 			tmp->Add(gcnew polygon());
@@ -544,7 +556,7 @@ public:
 
 			tmp[1]->points->Add(points[0]);
 			
-			if (l2->length() > min_length_line)
+			if (l2->length() >= min_length_line)
 			{
 				point ^p = l2->center();
 
