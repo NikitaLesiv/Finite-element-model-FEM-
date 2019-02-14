@@ -397,7 +397,7 @@ public:
 		
 		if (m1->intersect(m2)==false)
 		{
-			if (m1->p_s->y == m1->p_f->y)
+			if (m1->intersect(m3) == false)
 			{
 				tmp = m2->intersection_point(m3);
 			}
