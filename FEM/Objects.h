@@ -311,6 +311,8 @@ public:
 	point ^p_1 = gcnew point(1, 1);
 	point ^p_2 = gcnew point(2, 2);
 	point ^p_3 = gcnew point(3, 4);
+	line^ median1 = gcnew line();
+	line^ median2 = gcnew line();
 	String ^color = "Black";
 
 	triangle() // Конструктор
@@ -360,6 +362,67 @@ public:
 		tmp->y = ((pow(x1, 2) + pow(y1, 2)) * (x3 - x2) + (pow(x2, 2) + pow(y2, 2)) * (x1 - x3) + (pow(x3, 2) + pow(y3, 2)) * (x2 - x1)) / D;
 		tmp->R = (gcnew point(tmp->x, tmp->y))->distance(p_2);
 
+		return tmp;
+	}
+
+
+	point^ get_center()
+	{
+		point^ tmp = gcnew point();
+		point^ t11 = gcnew point();
+		point^ t12 = gcnew point();
+		point^ t21 = gcnew point();
+		point^ t22 = gcnew point();
+		point^ t31 = gcnew point();
+		point^ t32 = gcnew point();
+
+		line^ l1 = gcnew line(p_1, p_2);	
+		line^ l2 = gcnew line(p_1, p_3);
+		line^ l3 = gcnew line(p_2, p_3);
+		
+		t11 = p_3;
+		t12 = l1->center();
+		t21 = p_2;
+		t22 = l2->center();
+		t31 = p_1;
+		t32 = l3->center();
+
+		
+		line^ m1 = gcnew line(t11, t12);
+		line^ m2 = gcnew line(t21, t22);
+		line^ m3 = gcnew line(t31, t32);
+
+		median1 = m1;
+		median2 = m2;
+		
+		if (m1->intersect(m2)==false)
+		{
+			if (m1->p_s->y == m1->p_f->y)
+			{
+				tmp = m2->intersection_point(m3);
+			}
+			else 
+			{
+				tmp = m1->intersection_point(m3);
+			}
+			
+		}
+		else
+		{
+			tmp = m1->intersection_point(m2);
+		}
+
+
+		return tmp;
+	}
+
+	List <line^>^ list_of_border_lines()
+	{
+		List <line^>^ tmp = gcnew List<line^>;
+		tmp->Add(gcnew line(p_1, p_2));
+		tmp->Add(gcnew line(p_2, p_3));
+		tmp->Add(gcnew line(p_3, p_1));
+		
 		return tmp;
 	}
 

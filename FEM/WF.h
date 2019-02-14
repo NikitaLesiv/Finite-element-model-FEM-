@@ -45,6 +45,7 @@ namespace FEM
 	private: System::Windows::Forms::TextBox^  textBox2;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::TextBox^ textBox3;
 
 	private:
 		/// <summary>
@@ -65,6 +66,7 @@ namespace FEM
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -122,11 +124,20 @@ namespace FEM
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
 			// 
+			// textBox3
+			// 
+			this->textBox3->Location = System::Drawing::Point(704, 170);
+			this->textBox3->Multiline = true;
+			this->textBox3->Name = L"textBox3";
+			this->textBox3->Size = System::Drawing::Size(599, 415);
+			this->textBox3->TabIndex = 7;
+			// 
 			// WF
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1042, 620);
+			this->ClientSize = System::Drawing::Size(1351, 620);
+			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->label2);
@@ -150,7 +161,7 @@ namespace FEM
 		g->Clear(Color::White);		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 15;
+		int N = 5;
 		polygon ^pol = gcnew polygon(); 
 /**/
 		double df = 2 * Pi / N;
@@ -179,24 +190,41 @@ namespace FEM
 
 		polygons->Add(pol);
 
-		List <polygon^>^ pols_1 = triangulation(polygons, 210);
+		//List <polygon^>^ pols_1 = triangulation(polygons, 200);
 					
-		List <polygon ^> ^pols = gcnew List <polygon ^>;
+		List <polygon ^> ^pols = triangulation(polygons, 200);
 
-		for each (polygon ^p in pols_1)
+		List <triangle^>^ triangls = to_triangle(pols);
+		
+		//List <polygon ^> ^centers= gcnew List <polygon^>;
+
+//		textBox1->Text = Convert::ToString(pols->Count);
+
+		for each (triangle ^tr in triangls) // Отображение списка многоугольников (отображает список pols)
 		{
-			if (true || pols_1->IndexOf(p) == 1)
+			List <line ^> ^lines = tr->list_of_border_lines();
+			
+			point^ t_point = tr->get_center();
+			t_point->color = "red";
+
+			if (t_point->x<600 && t_point->x > 0)
 			{
-				pols->Add(p);
-			}	
-		}
-
-		textBox1->Text = Convert::ToString(pols->Count);
-
-		for each (polygon ^p in pols) // Отображение списка многоугольников (отображает список pols)
-		{
-			List <line ^> ^lines = p->list_of_border_lines();
-
+				t_point->show(g, x_res, y_res, scale, 8);	
+			}
+		//	
+			if (!(t_point->x < 600 && t_point->x > 0))
+			{
+				textBox3->AppendText(Convert::ToString(tr->p_1->x + " " + tr->p_2->x + " " + tr->p_3->x + "\n"));
+				textBox3->AppendText(Convert::ToString(tr->p_1->y + " " + tr->p_2->y + " " + tr->p_3->y + "\n"));
+				textBox3->AppendText(Convert::ToString(tr->median1->intersect(tr->median2)+"\n"));
+				//tr->median1->show(g, x_res, y_res, scale, 2);
+				//tr->median2->show(g, x_res, y_res, scale, 2);
+				point^ per = tr->median1->intersection_point(tr->median2);
+				per->color = "blue";
+				//per->show(g, x_res, y_res, scale, 8);
+			}
+			
+			
 			for each (line ^l in lines)
 			{
 				l->color = "Blue";
