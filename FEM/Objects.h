@@ -27,31 +27,31 @@ public:
 		this->x = x;
 		this->y = y;
 	}
-	point(double x, double y, String ^color) // Конструктор
+	point(double x, double y, String^ color) // Конструктор
 	{
 		this->x = x;
 		this->y = y;
 		this->color = color;
 	}
 
-	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale, int diameter)
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale, int diameter)
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 		
-		int x_px = static_cast<int>(x * resolutions_x / scale) - diameter / 2;
-		int y_px = static_cast<int>(y * resolutions_y / scale) - diameter / 2;
+		int x_px = static_cast <int>(x * resolutions_x / scale - diameter / 2);
+		int y_px = static_cast <int>(y * resolutions_y / scale - diameter / 2);
 
 		g->FillEllipse(brush, x_px, y_px, diameter, diameter);
 	}
 
-	double distance(point ^p)
+	double distance(point^ p)
 	{
 		double dist = sqrt(pow(x - p->x, 2) + pow(y - p->y, 2));
 
 		return dist;
 	}
 
-	point^ operator= (point ^p)
+	point^ operator= (point^ p)
 	{
 		this->x = p->x;
 		this->y = p->y;
@@ -60,7 +60,7 @@ public:
 		return this;
 	}
 
-	bool operator== (point ^p)
+	bool operator== (point^ p)
 	{
 		bool condition = (this->x == p->x) && (this->y == p->y) && (this->color == p->color);
 
@@ -108,10 +108,10 @@ public:
 	{
 		Pen^ pen = gcnew Pen(Color::FromName(color), width);
 
-		int x_s_px = static_cast<int>(p_s->x * resolutions_x / scale);
-		int y_s_px = static_cast<int>(p_s->y * resolutions_y / scale);
-		int x_f_px = static_cast<int>(p_f->x * resolutions_x / scale);
-		int y_f_px = static_cast<int>(p_f->y * resolutions_y / scale);
+		int x_s_px = static_cast <int>(p_s->x * resolutions_x / scale);
+		int y_s_px = static_cast <int>(p_s->y * resolutions_y / scale);
+		int x_f_px = static_cast <int>(p_f->x * resolutions_x / scale);
+		int y_f_px = static_cast <int>(p_f->y * resolutions_y / scale);
 
 		g->DrawLine(pen, x_s_px, y_s_px, x_f_px, y_f_px);
 	}
@@ -246,17 +246,17 @@ public:
 	{
 		Pen ^pen = gcnew Pen(Color::FromName(color), width);
 
-		int radius_x_px = static_cast<int>(R * resolutions_x / scale);
-		int radius_y_px = static_cast<int>(R * resolutions_y / scale);
-		int x_px = static_cast<int>(x * resolutions_x / scale) - radius_x_px;
-		int y_px = static_cast<int>(y * resolutions_y / scale) - radius_y_px;
+		int radius_x_px = static_cast <int>(R * resolutions_x / scale);
+		int radius_y_px = static_cast <int>(R * resolutions_y / scale);
+		int x_px = static_cast <int>(x * resolutions_x / scale) - radius_x_px;
+		int y_px = static_cast <int>(y * resolutions_y / scale) - radius_y_px;
 
 		g->DrawEllipse(pen, x_px, y_px, 2 * radius_x_px, 2 * radius_y_px);
 	}
 
-	array <point ^> ^intersection_point(line ^l)
+	List <point ^> ^intersection_point(line ^l)
 	{
-		array <point ^> ^points = gcnew array <point ^>(2);
+		List <point ^> ^points = gcnew List <point ^>;
 		double k = l->k, b = l->b;
 		double x0 = x, y0 = y;
 
@@ -270,10 +270,22 @@ public:
 		double y1 = k * x1 + b;
 		double y2 = k * x2 + b;
 
-		points[0] = gcnew point(x1, y1);
-		points[1] = gcnew point(x2, y2);
+		points->Add(gcnew point(x1, y1));
+		points->Add(gcnew point(x2, y2));
 		
 		return points;
+	}
+
+	bool the_point_enters_the_circle(point^ p)
+	{
+		if (sqrt(pow(p->x - x, 2) + pow(p->y - y, 2)) <= R)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
 	}
 
 /*
@@ -311,8 +323,7 @@ public:
 	point ^p_1 = gcnew point(1, 1);
 	point ^p_2 = gcnew point(2, 2);
 	point ^p_3 = gcnew point(3, 4);
-	line^ median1 = gcnew line();
-	line^ median2 = gcnew line();
+	
 	String ^color = "Black";
 
 	triangle() // Конструктор
@@ -337,12 +348,12 @@ public:
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 
-		int x_1_px = static_cast<int>(p_1->x * resolutions_x / scale);
-		int y_1_px = static_cast<int>(p_1->y * resolutions_y / scale);
-		int x_2_px = static_cast<int>(p_2->x * resolutions_x / scale);
-		int y_2_px = static_cast<int>(p_2->y * resolutions_y / scale);
-		int x_3_px = static_cast<int>(p_3->x * resolutions_x / scale);
-		int y_3_px = static_cast<int>(p_3->y * resolutions_y / scale);
+		int x_1_px = static_cast <int>(p_1->x * resolutions_x / scale);
+		int y_1_px = static_cast <int>(p_1->y * resolutions_y / scale);
+		int x_2_px = static_cast <int>(p_2->x * resolutions_x / scale);
+		int y_2_px = static_cast <int>(p_2->y * resolutions_y / scale);
+		int x_3_px = static_cast <int>(p_3->x * resolutions_x / scale);
+		int y_3_px = static_cast <int>(p_3->y * resolutions_y / scale);
 
 		array <Point>^ points = { Point(x_1_px, y_1_px), Point(x_2_px, y_2_px), Point(x_3_px, y_3_px) };
 
@@ -365,53 +376,31 @@ public:
 		return tmp;
 	}
 
-
 	point^ get_center()
 	{
 		point^ tmp = gcnew point();
-		point^ t11 = gcnew point();
-		point^ t12 = gcnew point();
-		point^ t21 = gcnew point();
-		point^ t22 = gcnew point();
-		point^ t31 = gcnew point();
-		point^ t32 = gcnew point();
 
 		line^ l1 = gcnew line(p_1, p_2);	
-		line^ l2 = gcnew line(p_1, p_3);
-		line^ l3 = gcnew line(p_2, p_3);
-		
-		t11 = p_3;
-		t12 = l1->center();
-		t21 = p_2;
-		t22 = l2->center();
-		t31 = p_1;
-		t32 = l3->center();
-
-		
-		line^ m1 = gcnew line(t11, t12);
-		line^ m2 = gcnew line(t21, t22);
-		line^ m3 = gcnew line(t31, t32);
-
-		median1 = m1;
-		median2 = m2;
-		
-		if (m1->intersect(m2)==false)
-		{
-			if (m1->p_s->y == m1->p_f->y)
-			{
-				tmp = m2->intersection_point(m3);
-			}
-			else 
-			{
-				tmp = m1->intersection_point(m3);
-			}
+		line^ l2 = gcnew line(p_2, p_3);
+		line^ l3 = gcnew line(p_3, p_1);
 			
-		}
-		else
+		line^ m1 = gcnew line(p_1, l2->center());
+		line^ m2 = gcnew line(p_2, l3->center());
+		line^ m3 = gcnew line(p_3, l1->center());
+		
+		if (m1->intersect(m2) == true)
 		{
 			tmp = m1->intersection_point(m2);
 		}
-
+		else if ((m1->intersect(m2) == false) && (m2->p_s->y != m2->p_f->y))
+		{
+			tmp = m2->intersection_point(m3);
+		}
+		else if ((m1->intersect(m2) == false) && (m1->p_s->y != m1->p_f->y))
+		{
+			tmp = m1->intersection_point(m3);
+			
+		}
 
 		return tmp;
 	}
@@ -423,6 +412,21 @@ public:
 		tmp->Add(gcnew line(p_2, p_3));
 		tmp->Add(gcnew line(p_3, p_1));
 		
+		return tmp;
+	}
+
+	bool operator== (triangle^ tr)
+	{
+		bool tmp;
+
+		if ((p_1 == tr->p_1) && (p_2 == tr->p_2) && (p_3 == tr->p_3))
+		{
+			tmp = true;
+		}
+		else
+		{
+			tmp = false;
+		}
 		return tmp;
 	}
 
@@ -438,7 +442,6 @@ List <point ^> ^Cyclic_permutation_of_indices(List <point ^> ^list)
 {
 	int N = list->Count;
 	List <point ^> ^tmp = gcnew List <point ^>;
-
 	tmp->Add(list[N - 1]);
 
 	for (int i = 0; i < (N - 1); i++)
@@ -449,6 +452,94 @@ List <point ^> ^Cyclic_permutation_of_indices(List <point ^> ^list)
 	return tmp;
 }
 
+List <line^>^ remove_copies_from_the_list(List <line^>^ list)
+{
+	List <line^>^ tmp = gcnew List <line^>;
+	List <line^>^ tmp_1 = gcnew List <line^>;
+
+	tmp_1->AddRange(list);
+	tmp_1->Sort();
+
+	for each (line ^ l in list)
+	{
+		int N = tmp_1->Count, k = 0;
+
+		for (int i = 0; i < N; i++)
+		{
+			if (l == tmp_1[i])
+			{
+				k++;
+			}
+		}
+
+		if (k != 0)
+		{
+			tmp_1->RemoveRange(tmp->IndexOf(l), k);
+		}
+	}
+	tmp->AddRange(tmp_1);
+
+	return tmp;
+}
+
+List <point^>^ remove_copies_from_the_list(List <point^>^ list)
+{
+	List <point^>^ tmp = gcnew List <point^>;
+	List <point^>^ tmp_1 = gcnew List <point^>;
+
+	tmp_1->AddRange(list);
+	tmp_1->Sort();
+
+	for each (point ^ l in list)
+	{
+		int N = tmp_1->Count, k = 0;
+
+		for (int i = 0; i < N; i++)
+		{
+			if (l == tmp_1[i])
+			{
+				k++;
+			}
+		}
+
+		if (k != 0)
+		{
+			tmp_1->RemoveRange(tmp->IndexOf(l), k);
+		}
+	}
+	tmp->AddRange(tmp_1);
+
+	return tmp;
+}
+
+List <triangle^>^ remove_copies_from_the_list(List <triangle^>^ list)
+{
+	List <triangle^>^ tmp = gcnew List <triangle^>;
+	tmp->AddRange(list);
+
+	for each (triangle ^ l in list)
+	{
+		int N = tmp->Count, k = 0;
+
+		for (int i = 0; i < N; i++)
+		{
+			if (l == tmp[i])
+			{
+				k++;
+			}
+		}
+
+		if (k != 0)
+		{
+			for (int i = 0; i < (k - 1); i++)
+			{
+				tmp->Remove(l);
+			}
+		}
+	}
+
+	return tmp;
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -456,23 +547,23 @@ public ref class polygon
 {
 public:
 	int N = 0; // Номер полигона
-	List <point ^> ^points = gcnew List<point ^>; // Список вершин многоугольника (полигона)
-	String ^color = "Black";
+	List <point^>^ points = gcnew List<point^>; // Список вершин многоугольника (полигона)
+	String^ color = "Black";
 
 	polygon() // Конструктор
 	{
 	}
-	polygon(List<point ^> ^points) // Конструктор
+	polygon(List<point^>^ points) // Конструктор
 	{
 		this->points = points;	
 	}
-	polygon(List <point ^> ^points, String ^color) // Конструктор
+	polygon(List <point^>^ points, String^ color) // Конструктор
 	{
 		this->points = points;
 		this->color = color;
 	}
 
-	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale)
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale)
 	{
 		SolidBrush ^brush = gcnew SolidBrush(Color::FromName(color));
 
@@ -480,8 +571,8 @@ public:
 
 		for (int i = 0; i < points->Count; i++)
 		{
-			int x_px = static_cast<int>(points[i]->x * resolutions_x / scale);
-			int y_px = static_cast<int>(points[i]->y * resolutions_y / scale);
+			int x_px = static_cast <int>(points[i]->x * resolutions_x / scale);
+			int y_px = static_cast <int>(points[i]->y * resolutions_y / scale);
 
 			Points->Add(Point(x_px, y_px));
 		}
@@ -489,7 +580,7 @@ public:
 		g->FillPolygon(brush, Points->ToArray());
 	}
 
-	List <line ^> ^list_of_border_lines()
+	List <line^>^ list_of_border_lines()
 	{
 		List <line ^> ^tmp = gcnew List<line ^>;
 
@@ -523,7 +614,7 @@ public:
 		points = tmp;
 	}
 
-	List <polygon ^> ^bisection(double min_length_line)
+	List <polygon^>^ bisection(double min_length_line)
 	{
 		List <polygon ^> ^tmp = gcnew List <polygon ^>;
 
@@ -531,7 +622,7 @@ public:
 		{
 			tmp->Add(gcnew polygon(points));
 		}
-		else if (points->Count == 40000000)
+		else if (points->Count == 40000)
 		{	
 			line^ l1  = gcnew line(points[0], points[1]);
 			line^ l2  = gcnew line(points[1], points[2]);
@@ -571,15 +662,30 @@ public:
 			}
 			else
 			{
-				tmp[0]->points->Add(points[2]);
-				tmp[0]->points->Add(points[3]);
-				tmp[0]->points->Add(points[0]);
+				if (l_1->length() <= l_2->length())
+				{
+					tmp[0]->points->Add(points[2]);
+					tmp[0]->points->Add(points[3]);
+					tmp[0]->points->Add(points[0]);
 
-				tmp[1]->points->Add(points[0]);
-				tmp[1]->points->Add(points[1]);
-				tmp[1]->points->Add(points[2]);
+					tmp[1]->points->Add(points[0]);
+					tmp[1]->points->Add(points[1]);
+					tmp[1]->points->Add(points[2]);
 
-				l = l_1;
+					l = l_1;
+				}
+				else
+				{
+					tmp[0]->points->Add(points[3]);
+					tmp[0]->points->Add(points[0]);
+					tmp[0]->points->Add(points[1]);
+
+					tmp[1]->points->Add(points[1]);
+					tmp[1]->points->Add(points[2]);
+					tmp[1]->points->Add(points[3]);
+
+					l = l_2;
+				}
 			}
 			
 			if (l->length() >= min_length_line)
@@ -596,12 +702,13 @@ public:
 			line^ l2 = gcnew line(points[0], points[points->Count / 2]);
 			line^ l3 = gcnew line(points[0], points[points->Count - 1]);
 
-			while ((l2->k == l1->k) || (l2->k == l3->k))
+			while ((l1->k == l2->k) || (l2->k == l3->k))
 			{
 				points = Cyclic_permutation_of_indices(points);
 
 				l1 = gcnew line(points[0], points[1]);
 				l2 = gcnew line(points[0], points[points->Count / 2]);
+				l3 = gcnew line(points[0], points[points->Count - 1]);
 			}
 
 			tmp->Add(gcnew polygon());
@@ -655,12 +762,51 @@ public:
 public ref class mesh
 {
 public:
-
-
+	List <point^>^ points = gcnew List <point^>;
+	List <line^>^ lines = gcnew List <line^>;
+	List <triangle^>^ triangles = gcnew List <triangle^>;
 
 	mesh()
 	{
 
+	}
+
+	void show(Graphics^ g, int resolutions_x, int resolutions_y, double scale)
+	{
+
+
+	}
+
+	void set(List <triangle^>^ tr)
+	{
+		triangles->AddRange(tr);
+
+		List <line^>^ tmp = gcnew List <line^>;
+		List <point^>^ tmp_1 = gcnew List <point^>;
+	
+		for each (triangle ^ t in tr)
+		{
+			tmp->Add(gcnew line(t->p_1, t->p_2));
+			tmp->Add(gcnew line(t->p_2, t->p_3));
+			tmp->Add(gcnew line(t->p_3, t->p_1));
+
+			tmp_1->Add(t->p_1);
+			tmp_1->Add(t->p_1);
+			tmp_1->Add(t->p_1);
+		}
+
+		lines->AddRange(remove_copies_from_the_list(tmp));
+		points->AddRange(remove_copies_from_the_list(tmp_1));
+	}
+
+	List <triangle^>^ Delaunay_triangulation()
+	{
+		List <triangle^>^ tmp = gcnew List <triangle^>;
+
+
+
+
+		return tmp;
 	}
 
 	~mesh()

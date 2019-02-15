@@ -163,11 +163,9 @@ namespace FEM
 
 		int N = 5;
 		polygon ^pol = gcnew polygon(); 
-/**/
-		double df = 2 * Pi / N;
-		int x, y, x0 = 300, y0 = 300, R = 250;
-
-		List <point ^> ^points = gcnew List <point ^>;
+		List <point^>^ points = gcnew List <point^>;
+		
+		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 300;
 
 		for (int i = 0; i < N; i++) 
 		{
@@ -177,54 +175,40 @@ namespace FEM
 		}
 
 		pol->points->AddRange(points);
-
-/*
-		pol->points->Add(gcnew point(550, 300));
-		pol->points->Add(gcnew point(300, 550));
-		pol->points->Add(gcnew point(50, 300));
-		pol->points->Add(gcnew point(300, 50));				
-		pol->points->Add(gcnew point(400, 50));
-		pol->points->Add(gcnew point(550, 300));
-*/
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
-
-		polygons->Add(pol);
-
-		//List <polygon^>^ pols_1 = triangulation(polygons, 200);
-					
-		List <polygon ^> ^pols = triangulation(polygons, 200);
-
-		List <triangle^>^ triangls = to_triangle(pols);
+		polygons->Add(pol);			
+		List <triangle^>^ triangles = to_triangle(triangulation(polygons, 250));
 		
-		//List <polygon ^> ^centers= gcnew List <polygon^>;
+		textBox1->Text = Convert::ToString(triangles->Count);
 
-//		textBox1->Text = Convert::ToString(pols->Count);
+		circle^ circ = triangles[0]->circumscribed_circle();
+		circ->color = "black";
+		circ->show(g, x_res, y_res, scale, 2);
 
-		for each (triangle ^tr in triangls) // Отображение списка многоугольников (отображает список pols)
+		for each (triangle ^tr in triangles) // Отображение списка треугольников (отображает список triangles)
 		{
 			List <line ^> ^lines = tr->list_of_border_lines();
+		
+			if (!true)
+			{
+				circle^ c = tr->circumscribed_circle();
+				c->color = "green";
+				c->show(g, x_res, y_res, scale, 2);
+			}
 			
 			point^ t_point = tr->get_center();
-			t_point->color = "red";
 
-			if (t_point->x<600 && t_point->x > 0)
+			if (circ->the_point_enters_the_circle(t_point))
 			{
-				t_point->show(g, x_res, y_res, scale, 8);	
+				t_point->color = "red";
 			}
-		//	
-			if (!(t_point->x < 600 && t_point->x > 0))
+			else
 			{
-				textBox3->AppendText(Convert::ToString(tr->p_1->x + " " + tr->p_2->x + " " + tr->p_3->x + "\n"));
-				textBox3->AppendText(Convert::ToString(tr->p_1->y + " " + tr->p_2->y + " " + tr->p_3->y + "\n"));
-				textBox3->AppendText(Convert::ToString(tr->median1->intersect(tr->median2)+"\n"));
-				//tr->median1->show(g, x_res, y_res, scale, 2);
-				//tr->median2->show(g, x_res, y_res, scale, 2);
-				point^ per = tr->median1->intersection_point(tr->median2);
-				per->color = "blue";
-				//per->show(g, x_res, y_res, scale, 8);
+				t_point->color = "orange";
 			}
 			
-			
+			t_point->show(g, x_res, y_res, scale, 8);	
+		
 			for each (line ^l in lines)
 			{
 				l->color = "Blue";

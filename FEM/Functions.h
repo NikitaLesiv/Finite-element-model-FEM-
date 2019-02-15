@@ -8,7 +8,7 @@ double E  = 2.7182818284590452353602874713527;
 List <triangle^>^ to_triangle(List <polygon^>^ pols)
 {
 	List <triangle^>^ tmp = gcnew List <triangle^>;
-	
+
 	for each (polygon ^ p in pols)
 	{
 		triangle^ tr = gcnew triangle(p->points[0], p->points[1], p->points[2]);
@@ -18,11 +18,11 @@ List <triangle^>^ to_triangle(List <polygon^>^ pols)
 	return tmp;
 }
 
-List <polygon ^> ^bisection(List <polygon ^> ^pols, double min_length_line)
+List <polygon^>^ bisection(List <polygon^>^ pols, double min_length_line)
 {
-	List <polygon ^> ^tmp   = gcnew List <polygon ^>;
+	List <polygon^>^ tmp = gcnew List <polygon^>;
 
-	for each (polygon ^p in pols)
+	for each (polygon ^ p in pols)
 	{
 		tmp->AddRange(p->bisection(min_length_line));
 	}
@@ -30,26 +30,48 @@ List <polygon ^> ^bisection(List <polygon ^> ^pols, double min_length_line)
 	return tmp;
 }
 
-List <polygon ^> ^triangulation(List <polygon ^> ^pol, double min_length_line)
+List <line^>^ to_lines(List <polygon^>^ polygons)
 {
-	List <polygon ^> ^tmp   = gcnew List <polygon ^>;
-	List <polygon ^> ^tmp_2 = gcnew List <polygon ^>;
-	List <polygon ^> ^tmp_3 = gcnew List <polygon ^>;
+	List <line^>^ tmp = gcnew List <line^>;
 
-	tmp_2->AddRange(pol);
-	
+	for each (polygon ^ p in polygons)
+	{
+		tmp->AddRange(p->list_of_border_lines());
+	}
+
+	return tmp;
+}
+
+List <point^>^ to_points(List <polygon^>^ polygons)
+{
+	List <point^>^ tmp = gcnew List <point^>;
+
+	for each (polygon ^ p in polygons)
+	{
+		tmp->AddRange(p->points);
+	}
+
+	return tmp;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+List <polygon^>^ triangulation(List <polygon^>^ pol, double min_length_line)
+{
+	List <polygon^>^ tmp = gcnew List <polygon^>;
+	List <polygon^>^ tmp_1 = gcnew List <polygon^>;
+	tmp->AddRange(pol);
 	int k;
-	
+
 	do
 	{
 		k = 0;
+		tmp_1->AddRange(bisection(tmp, min_length_line));
+		tmp->Clear();
+		tmp->AddRange(tmp_1);
+		tmp_1->Clear();
 
-		tmp_3->AddRange(bisection(tmp_2, min_length_line));
-		tmp_2->Clear();
-		tmp_2->AddRange(tmp_3);
-		tmp_3->Clear();
-
-		for each (polygon ^ p in tmp_2)
+		for each (polygon ^ p in tmp)
 		{
 			if (p->points->Count > 3)
 			{
@@ -58,14 +80,6 @@ List <polygon ^> ^triangulation(List <polygon ^> ^pol, double min_length_line)
 		}
 	} while (k != 0);
 
-	tmp->AddRange(tmp_2);
-
 	return tmp;
 }
 
-List <line ^> ^Delaunay_triangulation(List <polygon ^> ^polygons)
-{
-	List <line ^> ^tmp = gcnew List <line ^>(10);
-
-	return tmp;
-}
