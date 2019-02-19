@@ -763,9 +763,8 @@ public ref class mesh
 {
 public:
 	List <point^>^ points = gcnew List <point^>;
-	List <line^>^ lines = gcnew List <line^>;
-	List <triangle^>^ triangles = gcnew List <triangle^>;
-
+	//List <array <int>^>^ l_array = gcnew List <array <int>^>(3);
+		
 	mesh()
 	{
 
@@ -779,24 +778,16 @@ public:
 
 	void set(List <triangle^>^ tr)
 	{
-		triangles->AddRange(tr);
+		List <point^>^ tmp_points = gcnew List <point^>;
 
-		List <line^>^ tmp = gcnew List <line^>;
-		List <point^>^ tmp_1 = gcnew List <point^>;
-	
-		for each (triangle ^ t in tr)
+		for each (triangle ^t in tr)
 		{
-			tmp->Add(gcnew line(t->p_1, t->p_2));
-			tmp->Add(gcnew line(t->p_2, t->p_3));
-			tmp->Add(gcnew line(t->p_3, t->p_1));
-
-			tmp_1->Add(t->p_1);
-			tmp_1->Add(t->p_1);
-			tmp_1->Add(t->p_1);
+			tmp_points->Add(t->p_1);
+			tmp_points->Add(t->p_2);
+			tmp_points->Add(t->p_3);
 		}
 
-		lines->AddRange(remove_copies_from_the_list(tmp));
-		points->AddRange(remove_copies_from_the_list(tmp_1));
+		points = tmp_points;// remove_copies_from_the_list(tmp_points);
 	}
 
 	List <triangle^>^ Delaunay_triangulation()

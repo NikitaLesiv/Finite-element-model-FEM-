@@ -161,7 +161,7 @@ namespace FEM
 		g->Clear(Color::White);		
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
-		int N = 5;
+		int N = 15;
 		polygon ^pol = gcnew polygon(); 
 		List <point^>^ points = gcnew List <point^>;
 		
@@ -177,11 +177,11 @@ namespace FEM
 		pol->points->AddRange(points);
 		List <polygon ^> ^polygons = gcnew List <polygon ^>;
 		polygons->Add(pol);			
-		List <triangle^>^ triangles = to_triangle(triangulation(polygons, 250));
+		List <triangle^>^ triangles = to_triangle(triangulation(polygons, 300));
 		
 		textBox1->Text = Convert::ToString(triangles->Count);
 
-		circle^ circ = triangles[0]->circumscribed_circle();
+		circle^ circ = triangles[10]->circumscribed_circle();
 		circ->color = "black";
 		circ->show(g, x_res, y_res, scale, 2);
 
@@ -218,7 +218,25 @@ namespace FEM
 				l->p_f->show(g, x_res, y_res, scale, 8);
 				l->show(g, x_res, y_res, scale, 2);
 			}
+
+
 		}
+
+		mesh^ mesh1 = gcnew mesh();
+		mesh1->set(triangles);
+		//mesh1->points->Sort();
+
+		triangles->
+
+
+		for each (point ^ tmp in mesh1->points)
+		{
+
+			textBox3->AppendText(Convert::ToString(tmp->x + ", " + tmp->y + "\n"));
+		}
+
+
 	}
+
 };
 }
