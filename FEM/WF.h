@@ -224,17 +224,18 @@ namespace FEM
 
 		mesh^ mesh1 = gcnew mesh();
 		mesh1->set(triangles);
-		//mesh1->points->Sort();
+		mesh1->remove_copies();
+		mesh1->write_rules(triangles);
 
-		triangles->
+		//triangles->
 
-
-		for each (point ^ tmp in mesh1->points)
+		String^ varstr;
+/**/
+		for each (array <Int32>^ tmpar in mesh1->rules)
 		{
-
-			textBox3->AppendText(Convert::ToString(tmp->x + ", " + tmp->y + "\n"));
+			varstr = Convert::ToString(tmpar[0]+ " " + tmpar[1] + " "+tmpar[2]);
+			textBox3->AppendText(varstr + "\n");
 		}
-
 
 	}
 
