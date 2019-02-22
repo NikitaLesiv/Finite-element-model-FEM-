@@ -775,6 +775,7 @@ public:
 	List <point^>^ points = gcnew List <point^>;
 	List <point^>^ points2 = gcnew List <point^>;
 	List <array <Int32>^>^ rules = gcnew List <array <Int32>^>;
+	List <String^>^ values = gcnew List <String^>;
 
 	mesh()
 	{
@@ -850,34 +851,31 @@ public:
 		List <point^>^ tmp_points = gcnew List <point^>;
 		int k = 0;
 		int count;
-		int Nt = tr->Count;
+		Int32 Nt = Convert::ToInt32(tr->Count);
+		String^ tmpstr;
 		array <Int32>^ tmpar = gcnew array <Int32>(3);
-
-		for (int i=0; i < Nt ; i++)
+		count = 0;
+		for (Int32 i=0; i < Nt ; i++)
 		{
 			count = 0;
+			tmpstr = "";
 			for each (point ^ tpoint in points2)
 			{
+
 				for each (Int32^ tl in tpoint->Triangles_Numbers)
 				{
-					if (Convert::ToInt32(i) == tl && count<3)
+					
+					if (i == Convert::ToInt32(tl) && count<3)
 					{
-						tmpar[count] = Convert::ToInt32(tl);
-						if (count==2)
-						{
-							rules->Add(tmpar);
-						}
-						count++;
+						tmpstr += Convert::ToString(tl) + " ";
+						//tmpar[count] = Convert::ToInt32(tl);
+/*						tmpstr += Convert::ToString(tl) + " ";
+*/						count++;
 					}
-
 				}
-
 			}
-			
+			values->Add(tmpstr);
 		}
-
-		points = tmp_points;// remove_copies_from_the_list(tmp_points);
-
 	}
 
 

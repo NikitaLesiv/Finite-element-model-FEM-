@@ -230,11 +230,16 @@ namespace FEM
 		//triangles->
 
 		String^ varstr;
-/**/
+/*
 		for each (array <Int32>^ tmpar in mesh1->rules)
 		{
 			varstr = Convert::ToString(tmpar[0]+ " " + tmpar[1] + " "+tmpar[2]);
 			textBox3->AppendText(varstr + "\n");
+		}
+*/
+		for each (String^ value in mesh1->values)
+		{
+			textBox3->AppendText(value + "\n");
 		}
 
 	}
