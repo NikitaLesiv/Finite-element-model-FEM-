@@ -155,19 +155,19 @@ namespace FEM
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e)
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		Graphics ^g = pictureBox1->CreateGraphics();
-		g->Clear(Color::White);		
+		Graphics^ g = pictureBox1->CreateGraphics();
+		g->Clear(Color::White);
 		const int x_res = 600, y_res = 600, scale = 600; // Разрешение и масштаб
 
 		int N = 15;
-		polygon ^pol = gcnew polygon(); 
+		polygon^ pol = gcnew polygon();
 		List <point^>^ points = gcnew List <point^>;
-		
+
 		double df = 2 * Pi / N, x, y, x0 = 300, y0 = 300, R = 300;
 
-		for (int i = 0; i < N; i++) 
+		for (int i = 0; i < N; i++)
 		{
 			x = R * cos(i * df) + x0;
 			y = R * sin(i * df) + y0;
@@ -175,27 +175,27 @@ namespace FEM
 		}
 
 		pol->points->AddRange(points);
-		List <polygon ^> ^polygons = gcnew List <polygon ^>;
-		polygons->Add(pol);			
+		List <polygon^>^ polygons = gcnew List <polygon^>;
+		polygons->Add(pol);
 		List <triangle^>^ triangles = to_triangle(triangulation(polygons, 300));
-		
+
 		textBox1->Text = Convert::ToString(triangles->Count);
 
 		circle^ circ = triangles[10]->circumscribed_circle();
 		circ->color = "black";
 		circ->show(g, x_res, y_res, scale, 2);
 
-		for each (triangle ^tr in triangles) // Отображение списка треугольников (отображает список triangles)
+		for each (triangle ^ tr in triangles) // Отображение списка треугольников (отображает список triangles)
 		{
-			List <line ^> ^lines = tr->list_of_border_lines();
-		
+			List <line^>^ lines = tr->list_of_border_lines();
+
 			if (!true)
 			{
 				circle^ c = tr->circumscribed_circle();
 				c->color = "green";
 				c->show(g, x_res, y_res, scale, 2);
 			}
-			
+
 			point^ t_point = tr->get_center();
 
 			if (circ->the_point_enters_the_circle(t_point))
@@ -206,10 +206,10 @@ namespace FEM
 			{
 				t_point->color = "orange";
 			}
-			
-			t_point->show(g, x_res, y_res, scale, 8);	
-		
-			for each (line ^l in lines)
+
+			t_point->show(g, x_res, y_res, scale, 8);
+
+			for each (line ^ l in lines)
 			{
 				l->color = "Blue";
 				l->p_s->color = "Green";
@@ -230,14 +230,14 @@ namespace FEM
 		//triangles->
 
 		String^ varstr;
-/*
+/*		
 		for each (array <Int32>^ tmpar in mesh1->rules)
 		{
 			varstr = Convert::ToString(tmpar[0]+ " " + tmpar[1] + " "+tmpar[2]);
 			textBox3->AppendText(varstr + "\n");
 		}
-*/
-		for each (String^ value in mesh1->values)
+*/		
+		for each (String ^ value in mesh1->values)
 		{
 			textBox3->AppendText(value + "\n");
 		}

@@ -425,6 +425,31 @@ public:
 		return tmp;
 	}
 
+	bool the_point_enters_the_triangle(point^ p)
+	{
+		double Bx = p_2->x - p_1->x, By = p_2->y - p_1->y;
+		double Cx = p_3->x - p_1->x, Cy = p_3->y - p_1->y;
+		double Px = p->x - p_1->x,   Py = p->y - p_1->y;
+	
+		double m = (Px * By - Bx * Py) / (Cx * By - Bx * Cy);
+		if ((m >= 0) && (m <= 1))
+		{
+			double l = (Px - m * Cx) / Bx;
+			if ((l >= 0) && ((m + l) <= 1))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	bool operator== (triangle^ tr)
 	{
 		bool tmp;
@@ -462,6 +487,7 @@ List <point ^> ^Cyclic_permutation_of_indices(List <point ^> ^list)
 	return tmp;
 }
 
+/*
 List <line^>^ remove_copies_from_the_list(List <line^>^ list)
 {
 	List <line^>^ tmp = gcnew List <line^>;
@@ -549,6 +575,21 @@ List <triangle^>^ remove_copies_from_the_list(List <triangle^>^ list)
 	}
 
 	return tmp;
+}
+*/
+
+void buble_sort_list_lines(List <line^>^ lines)
+{
+	int k = 0;
+
+	do
+	{
+		for (int i = 0; i < lines->Count - 1; i++)
+		{
+			///////////////////////////////////////////
+		}
+
+	} while (k != 0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -773,7 +814,6 @@ public ref class mesh
 {
 public:
 	List <point^>^ points = gcnew List <point^>;
-	List <point^>^ points2 = gcnew List <point^>;
 	List <array <Int32>^>^ rules = gcnew List <array <Int32>^>;
 	List <String^>^ values = gcnew List <String^>;
 
@@ -801,13 +841,14 @@ public:
 
 	}
 
-
 	void remove_copies()
 	{
 		List <point^>^ tmp_points = gcnew List <point^>;
-		int k=0;
-		int m;
+		List <point^>^ points2 = gcnew List <point^>;
+		points2->AddRange(points);
+		int k = 0, m;
 		tmp_points->Add(points[0]);
+		
 		for each (point ^ tpoint in points)
 		{
 			m = 0;
@@ -824,7 +865,7 @@ public:
 			}
 		}
 
-		points2 = tmp_points;
+		points = tmp_points;
 	}
 
 	void set(List <triangle^>^ tr)
@@ -849,28 +890,31 @@ public:
 	void write_rules(List <triangle^>^ tr)
 	{
 		List <point^>^ tmp_points = gcnew List <point^>;
+		List <point^>^ points2 = gcnew List <point^>;
+		points2->AddRange(points);
 		int k = 0;
 		int count;
 		Int32 Nt = Convert::ToInt32(tr->Count);
 		String^ tmpstr;
 		array <Int32>^ tmpar = gcnew array <Int32>(3);
 		count = 0;
-		for (Int32 i=0; i < Nt ; i++)
+
+		for (Int32 i = 0; i < Nt; i++)
 		{
 			count = 0;
 			tmpstr = "";
 			for each (point ^ tpoint in points2)
 			{
-
-				for each (Int32^ tl in tpoint->Triangles_Numbers)
+				for each (Int32 ^ tl in tpoint->Triangles_Numbers)
 				{
-					
-					if (i == Convert::ToInt32(tl) && count<3)
+					if (i == Convert::ToInt32(tl) && count < 3)
 					{
 						tmpstr += Convert::ToString(tl) + " ";
-						//tmpar[count] = Convert::ToInt32(tl);
-/*						tmpstr += Convert::ToString(tl) + " ";
-*/						count++;
+/*					
+						tmpar[count] = Convert::ToInt32(tl);
+						tmpstr += Convert::ToString(tl) + " ";
+*/						
+						count++;
 					}
 				}
 			}
@@ -878,6 +922,11 @@ public:
 		}
 	}
 
+	List <triangle^>^ get_list_triangles()
+	{
+		List <triangle^>^ list_triangles = gcnew List <triangle^>;
+		return list_triangles;
+	}
 
 	List <triangle^>^ Delaunay_triangulation()
 	{
