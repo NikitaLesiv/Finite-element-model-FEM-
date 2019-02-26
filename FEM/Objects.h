@@ -98,6 +98,7 @@ public:
 	{
 	
 	}
+
 	line(point ^p_s, point ^p_f) // Конструктор
 	{
 		this->p_s = p_s;
@@ -105,6 +106,7 @@ public:
 		b = (p_s->y * p_f->x - p_f->y * p_s->x) / (p_f->x - p_s->x);
 		k = (p_f->y - p_s->y) / (p_f->x - p_s->x);
 	}
+
 	line(point ^p_s, point ^p_f, String^ color) // Конструктор
 	{
 		this->p_s = p_s;
@@ -354,7 +356,7 @@ public:
 		this->color = color;
 	}
 
-	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale)
+	void show(Graphics ^g, int resolutions_x, int resolutions_y, double scale, String^ color)
 	{
 		SolidBrush^ brush = gcnew SolidBrush(Color::FromName(color));
 
@@ -424,6 +426,7 @@ public:
 		
 		return tmp;
 	}
+
 
 	bool operator== (triangle^ tr)
 	{
@@ -800,13 +803,26 @@ public:
 
 
 	}
-
-
-	void remove_copies()
+	
+	void set(List <triangle^>^ tr)
 	{
 		List <point^>^ tmp_points = gcnew List <point^>;
-		int k=0;
+		int k = 0;
+		for each (triangle ^t in tr)
+		{
+			t->p_1->Triangles_Numbers->Add(k);
+			t->p_2->Triangles_Numbers->Add(k);
+			t->p_3->Triangles_Numbers->Add(k);
+			tmp_points->Add(t->p_1);
+			tmp_points->Add(t->p_2);
+			tmp_points->Add(t->p_3);
+			k++;
+		}
+		points->Clear();
+		points->AddRange(tmp_points);
+		//---------------------------------------------------------------------
 		int m;
+		tmp_points->Clear();
 		tmp_points->Add(points[0]);
 		for each (point ^ tpoint in points)
 		{
@@ -823,60 +839,63 @@ public:
 				tmp_points->Add(tpoint);
 			}
 		}
+		//---------------------------------------------------------------------
+		int Np = 0, i=0;
+		k = 0;
+		int count, check;
+		Int32 Nt = Convert::ToInt32(tr->Count);
+		array <Int32>^ tmpar = gcnew array <Int32>(3);
+		
+		count = 0;
 
-		points2 = tmp_points;
-	}
-
-	void set(List <triangle^>^ tr)
-	{
-		List <point^>^ tmp_points = gcnew List <point^>;
-		int k = 0;
-		for each (triangle ^t in tr)
+		for each (point ^ tpoint in tmp_points)
 		{
-			t->p_1->Triangles_Numbers->Add(k);
-			t->p_2->Triangles_Numbers->Add(k);
-			t->p_3->Triangles_Numbers->Add(k);
-			tmp_points->Add(t->p_1);
-			tmp_points->Add(t->p_2);
-			tmp_points->Add(t->p_3);
-			k++;
+			tpoint->N = Np;
+			Np++;
 		}
 
-		points = tmp_points;// remove_copies_from_the_list(tmp_points);
-		
-	}
-
-	void write_rules(List <triangle^>^ tr)
-	{
-		List <point^>^ tmp_points = gcnew List <point^>;
-		int k = 0;
-		int count;
-		Int32 Nt = Convert::ToInt32(tr->Count);
-		String^ tmpstr;
-		array <Int32>^ tmpar = gcnew array <Int32>(3);
-		count = 0;
-		for (Int32 i=0; i < Nt ; i++)
+		for each (triangle^ vartr in tr)
 		{
 			count = 0;
-			tmpstr = "";
-			for each (point ^ tpoint in points2)
+			check = 1;
+			for each (point ^ tpoint in tmp_points)
 			{
-
-				for each (Int32^ tl in tpoint->Triangles_Numbers)
+				for each (Int32 ^ tl in tpoint->Triangles_Numbers)
 				{
-					
-					if (i == Convert::ToInt32(tl) && count<3)
+					if (i == Convert::ToInt32(tl))
 					{
-						tmpstr += Convert::ToString(tl) + " ";
-						//tmpar[count] = Convert::ToInt32(tl);
-/*						tmpstr += Convert::ToString(tl) + " ";
-*/						count++;
+						switch (count)
+						{ 
+						case 0:
+							vartr->p_1 = tpoint;
+							count++;
+							break;
+						case 1:
+							vartr->p_2 = tpoint;
+							count++;
+							break;
+						case 2:
+							vartr->p_3 = tpoint;
+							count++;
+							break;
+						case 3:
+							check = 0;
+							break;
+						}			
 					}
 				}
+				if (check == 0) 
+				{
+					break;
+				}
+
 			}
-			values->Add(tmpstr);
+			i++;
 		}
+		points->Clear();
+		points->AddRange(tmp_points);
 	}
+
 
 
 	List <triangle^>^ Delaunay_triangulation()

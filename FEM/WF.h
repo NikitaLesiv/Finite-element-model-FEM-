@@ -180,7 +180,12 @@ namespace FEM
 		List <triangle^>^ triangles = to_triangle(triangulation(polygons, 300));
 		
 		textBox1->Text = Convert::ToString(triangles->Count);
+		mesh^ mesh1 = gcnew mesh();
+		mesh1->set(triangles);
 
+		String^ varstr;
+		
+/*
 		circle^ circ = triangles[10]->circumscribed_circle();
 		circ->color = "black";
 		circ->show(g, x_res, y_res, scale, 2);
@@ -221,27 +226,48 @@ namespace FEM
 
 
 		}
+*/
 
-		mesh^ mesh1 = gcnew mesh();
-		mesh1->set(triangles);
-		mesh1->remove_copies();
-		mesh1->write_rules(triangles);
-
-		//triangles->
-
-		String^ varstr;
-/*
 		for each (array <Int32>^ tmpar in mesh1->rules)
 		{
 			varstr = Convert::ToString(tmpar[0]+ " " + tmpar[1] + " "+tmpar[2]);
 			textBox3->AppendText(varstr + "\n");
 		}
-*/
-		for each (String^ value in mesh1->values)
+
+/*	for each (point^ t in mesh1->points)
 		{
-			textBox3->AppendText(value + "\n");
+			varstr = "";
+			for each (Int32 ^ N1 in t->Triangles_Numbers)
+			{
+				varstr += Convert::ToString(N1+" ");
+			}
+						
+			textBox3->AppendText(varstr + "\n");
 		}
 
+*/
+		
+		for each (triangle ^ tr in triangles) // Отображение списка треугольников (отображает список triangles)
+		{
+			List <line^>^ lines = tr->list_of_border_lines();
+			String^ value = Convert::ToString(triangles->IndexOf(tr)+"\n");
+			textBox3->AppendText(value);
+			for each (line ^ l in lines)
+			{
+				l->color = "Red";
+				l->p_s->color = "Red";
+				l->p_f->color = "Red";
+				l->p_s->show(g, x_res, y_res, scale, 8);
+				l->p_f->show(g, x_res, y_res, scale, 8);
+				l->show(g, x_res, y_res, scale, 2);
+			}
+		}
+/*		textBox3->AppendText("--------------------------------------------\n");
+		for each (String^ value in mesh1->values)
+		{
+			textBox3->AppendText(value + "\n"+"---------------------------"+"\n");
+		}
+*/
 	}
 
 };
